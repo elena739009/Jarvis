@@ -1213,11 +1213,11 @@
     function onScroll() {
       const y = window.scrollY;
       navWrapper.classList.toggle('scrolled', y > 20);
-      backToTop.classList.toggle('visible', y > 300);
+      backToTop?.classList.toggle('visible', y > 300);
       // Мобильный CTA: показать после 300px, скрыть у секции contact
       const contactTop = document.getElementById('contact')?.getBoundingClientRect().top ?? 9999;
       const shouldShow = y > 300 && contactTop > window.innerHeight * 0.5;
-      mobileCta.classList.toggle('show', shouldShow);
+      mobileCta?.classList.toggle('show', shouldShow);
     }
 
     window.addEventListener('scroll', onScroll, { passive: true });
@@ -1260,34 +1260,38 @@
     const formSuccess = form?.querySelector('.form-success');
     const formError   = form?.querySelector('.form-error');
 
-    form?.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const submitBtn = form.querySelector('.form-submit');
-      submitBtn.disabled = true;
-      submitBtn.textContent = 'Отправляем...';
-      formSuccess.hidden = true;
-      formError.hidden   = true;
+    if (form) {
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const submitBtn = form.querySelector('.form-submit');
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Отправляем...';
+        formSuccess.hidden = true;
+        formError.hidden   = true;
 
-      try {
-        const res = await fetch(form.action, {
-          method: 'POST',
-          body: new FormData(form),
-          headers: { 'Accept': 'application/json' }
-        });
-        if (res.ok) {
-          formSuccess.hidden = false;
-          form.reset();
+        try {
+          const res = await fetch(form.action, {
+            method: 'POST',
+            body: new FormData(form),
+            headers: { 'Accept': 'application/json' }
+          });
+          if (res.ok) {
+            formSuccess.hidden = false;
+            formError.hidden   = true;
+            form.reset();
+            submitBtn.textContent = 'Отправить заявку →';
+          } else {
+            throw new Error('Server error');
+          }
+        } catch {
+          formError.hidden = false;
+          formSuccess.hidden = true;
           submitBtn.textContent = 'Отправить заявку →';
-        } else {
-          throw new Error('Server error');
+        } finally {
+          submitBtn.disabled = false;
         }
-      } catch {
-        formError.hidden = false;
-        submitBtn.textContent = 'Отправить заявку →';
-      } finally {
-        submitBtn.disabled = false;
-      }
-    });
+      });
+    }
 
     // Инициализация на загрузке
     onScroll();
