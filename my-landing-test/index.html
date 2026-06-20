@@ -448,6 +448,83 @@
     @media (max-width: 900px) {
       .services-grid { grid-template-columns: 1fr; max-width: 480px; margin-inline: auto; }
     }
+
+    /* ── Works ── */
+    #works {
+      padding-block: var(--section-gap);
+    }
+    .works-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 2rem;
+      margin-top: 3rem;
+    }
+    .work-card {
+      background: var(--surface);
+      border-radius: var(--radius);
+      overflow: hidden;
+      border: 1px solid var(--border);
+      transition: transform var(--transition), box-shadow var(--transition);
+    }
+    .work-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 50px rgba(0,0,0,0.1);
+    }
+    .work-preview {
+      height: 220px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .work-preview--purple {
+      background: linear-gradient(135deg, #A78BFA 0%, #7C3AED 100%);
+    }
+    .work-preview--coral {
+      background: linear-gradient(135deg, #FF6B6B 0%, #FF8E53 100%);
+    }
+    .work-preview-text {
+      font-family: 'Bricolage Grotesque', sans-serif;
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: rgba(255,255,255,0.9);
+      text-align: center;
+      line-height: 1.2;
+    }
+    .work-info { padding: 1.5rem; }
+    .work-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 0.75rem;
+    }
+    .tag {
+      display: inline-block;
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 3px 10px;
+      border-radius: 50px;
+      background: var(--border);
+      color: var(--text-muted);
+    }
+    .tag--purple { background: rgba(167,139,250,0.15); color: #7C3AED; }
+    .tag--green  { background: rgba(52,211,153,0.15);  color: #059669; }
+    .work-title {
+      font-family: 'Bricolage Grotesque', sans-serif;
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+    .work-desc { font-size: 0.9rem; color: var(--text-muted); line-height: 1.6; }
+    .works-disclaimer {
+      margin-top: 2.5rem;
+      text-align: center;
+      font-style: italic;
+      color: var(--text-muted);
+      font-size: 0.95rem;
+    }
+    @media (max-width: 768px) {
+      .works-grid { grid-template-columns: 1fr; }
+    }
   </style>
 </head>
 <body>
@@ -597,6 +674,50 @@
       </article>
 
     </div>
+  </div>
+</section>
+
+<section id="works">
+  <div class="container">
+    <p class="section-label reveal">Мои работы</p>
+    <h2 class="section-title reveal reveal-delay-1">Что уже создано</h2>
+    <div class="works-grid">
+
+      <article class="work-card reveal reveal-delay-1">
+        <div class="work-preview work-preview--purple" aria-hidden="true">
+          <span class="work-preview-text">Калькулятор<br>призвания</span>
+        </div>
+        <div class="work-info">
+          <div class="work-tags">
+            <span class="tag tag--purple">Демо-проект</span>
+            <span class="tag">Лендинг</span>
+            <span class="tag">CSS-анимации</span>
+          </div>
+          <h3 class="work-title">Калькулятор призвания</h3>
+          <p class="work-desc">Лендинг для психологического теста. Адаптивная вёрстка, анимации на CSS, форма сбора контактов.</p>
+        </div>
+      </article>
+
+      <article class="work-card reveal reveal-delay-2">
+        <div class="work-preview work-preview--coral" aria-hidden="true">
+          <span class="work-preview-text">Поздрав-<br>лятор</span>
+        </div>
+        <div class="work-info">
+          <div class="work-tags">
+            <span class="tag tag--green">Концепт</span>
+            <span class="tag">UX</span>
+            <span class="tag">MVP-план</span>
+          </div>
+          <h3 class="work-title">Поздравлятор</h3>
+          <p class="work-desc">Концепт сервиса для видеооткрыток. UX-проектирование, прототип интерфейса, план MVP.</p>
+        </div>
+      </article>
+
+    </div>
+    <p class="works-disclaimer reveal">
+      ✨ Это мои учебные работы — я только начинаю путь.
+      Именно поэтому каждому проекту уделяю максимум внимания.
+    </p>
   </div>
 </section>
   </main>
