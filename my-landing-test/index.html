@@ -601,6 +601,76 @@
       .process-step { flex-direction: row; gap: 1.5rem; align-items: flex-start; padding: 0 0 0 1rem; }
       .step-num { font-size: 2rem; min-width: 48px; text-align: center; padding: 0; }
     }
+
+    /* ── Trust ── */
+    #trust {
+      padding-block: var(--section-gap);
+    }
+    .trust-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.25rem;
+      margin-top: 3rem;
+    }
+    .trust-card {
+      background: var(--surface);
+      border-radius: var(--radius);
+      padding: 1.75rem;
+      border: 1px solid var(--border);
+      transition: transform var(--transition), box-shadow var(--transition);
+    }
+    .trust-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 30px rgba(52,211,153,0.1);
+      border-color: var(--accent-3);
+    }
+    .trust-icon {
+      display: block;
+      font-size: 2rem;
+      margin-bottom: 0.75rem;
+    }
+    .trust-title {
+      font-family: 'Bricolage Grotesque', sans-serif;
+      font-size: 1.05rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+    .trust-desc {
+      font-size: 0.875rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+    .trust-stats {
+      display: flex;
+      justify-content: center;
+      gap: 5rem;
+      margin-top: 4rem;
+      padding-top: 3rem;
+      border-top: 1px solid var(--border);
+    }
+    .stat { text-align: center; }
+    .stat-num {
+      display: block;
+      font-family: 'Bricolage Grotesque', sans-serif;
+      font-size: clamp(2.5rem, 5vw, 3.5rem);
+      font-weight: 800;
+      color: var(--accent);
+      line-height: 1;
+    }
+    .stat-label {
+      display: block;
+      font-size: 0.875rem;
+      color: var(--text-muted);
+      margin-top: 0.4rem;
+    }
+    @media (max-width: 900px) {
+      .trust-grid { grid-template-columns: repeat(2, 1fr); }
+      .trust-stats { gap: 2.5rem; }
+    }
+    @media (max-width: 480px) {
+      .trust-grid { grid-template-columns: 1fr; }
+      .trust-stats { flex-direction: column; gap: 1.5rem; }
+    }
   </style>
 </head>
 <body>
@@ -839,6 +909,49 @@
         </div>
       </div>
 
+    </div>
+  </div>
+</section>
+
+<section id="trust">
+  <div class="container">
+    <p class="section-label reveal">Спокойствие</p>
+    <h2 class="section-title reveal reveal-delay-1">Работаем спокойно</h2>
+    <div class="trust-grid">
+      <div class="trust-card reveal reveal-delay-1">
+        <span class="trust-icon" aria-hidden="true">📋</span>
+        <h3 class="trust-title">Договор</h3>
+        <p class="trust-desc">На каждый проект — письменное соглашение с зафиксированными сроками и стоимостью</p>
+      </div>
+      <div class="trust-card reveal reveal-delay-2">
+        <span class="trust-icon" aria-hidden="true">💳</span>
+        <h3 class="trust-title">Поэтапная оплата</h3>
+        <p class="trust-desc">Аванс только после утверждения ТЗ. Финальная оплата — после сдачи</p>
+      </div>
+      <div class="trust-card reveal reveal-delay-3">
+        <span class="trust-icon" aria-hidden="true">✏️</span>
+        <h3 class="trust-title">Правки включены</h3>
+        <p class="trust-desc">Месяц бесплатных правок после сдачи — не «за отдельную плату»</p>
+      </div>
+      <div class="trust-card reveal reveal-delay-3">
+        <span class="trust-icon" aria-hidden="true">🎓</span>
+        <h3 class="trust-title">Обучение</h3>
+        <p class="trust-desc">Покажу как пользоваться результатом и отвечу на вопросы — не оставлю одну</p>
+      </div>
+    </div>
+    <div class="trust-stats">
+      <div class="stat reveal reveal-delay-1">
+        <span class="stat-num">2</span>
+        <span class="stat-label">проекта создано</span>
+      </div>
+      <div class="stat reveal reveal-delay-2">
+        <span class="stat-num">100%</span>
+        <span class="stat-label">сдано в срок</span>
+      </div>
+      <div class="stat reveal reveal-delay-3">
+        <span class="stat-num">~1 ч</span>
+        <span class="stat-label">время ответа</span>
+      </div>
     </div>
   </div>
 </section>
