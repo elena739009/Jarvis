@@ -671,6 +671,175 @@
       .trust-grid { grid-template-columns: 1fr; }
       .trust-stats { flex-direction: column; gap: 1.5rem; }
     }
+
+    /* ── Contact ── */
+    #contact {
+      padding-block: var(--section-gap);
+      background: var(--surface);
+      position: relative;
+      overflow: hidden;
+    }
+    .contact-blob {
+      position: absolute;
+      bottom: -200px; left: -150px;
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(255,107,107,0.12) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .contact-sub {
+      color: var(--text-muted);
+      font-size: 1.05rem;
+      margin-bottom: 3rem;
+      max-width: 50ch;
+    }
+    .contact-inner {
+      display: grid;
+      grid-template-columns: 1fr 300px;
+      gap: 4rem;
+      align-items: start;
+    }
+    .contact-form {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+    .form-group label {
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+    .form-group input,
+    .form-group textarea {
+      padding: 0.85rem 1rem;
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-sm);
+      font: inherit;
+      font-size: 1rem;
+      background: var(--bg);
+      color: var(--text);
+      transition: border-color var(--transition), box-shadow var(--transition);
+      outline: none;
+      min-height: 44px;
+    }
+    .form-group input:focus,
+    .form-group textarea:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(255,107,107,0.1);
+    }
+    .form-group textarea { resize: vertical; min-height: 120px; }
+    .form-submit { align-self: flex-start; }
+    .form-success,
+    .form-error {
+      padding: 0.85rem 1rem;
+      border-radius: var(--radius-sm);
+      font-weight: 500;
+      font-size: 0.9rem;
+    }
+    .form-success { background: rgba(52,211,153,0.1); color: #059669; }
+    .form-error   { background: rgba(255,107,107,0.1); color: #dc2626; }
+
+    .contact-alt { padding-top: 1rem; }
+    .contact-alt-title {
+      font-weight: 600;
+      margin-bottom: 1rem;
+      color: var(--text-muted);
+    }
+    .contact-tg { width: 100%; justify-content: center; }
+    .contact-promise {
+      margin-top: 1rem;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      text-align: center;
+    }
+
+    @media (max-width: 768px) {
+      .contact-inner { grid-template-columns: 1fr; gap: 2rem; }
+      .form-submit { width: 100%; justify-content: center; }
+    }
+
+    /* ── Footer ── */
+    .footer {
+      padding-block: 2rem;
+      border-top: 1px solid var(--border);
+    }
+    .footer-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .footer-logo {
+      font-family: 'Bricolage Grotesque', sans-serif;
+      font-size: 1.2rem;
+      font-weight: 800;
+    }
+    .footer-copy {
+      font-size: 0.875rem;
+      color: var(--text-muted);
+    }
+    .footer-links a {
+      font-size: 0.875rem;
+      color: var(--text-muted);
+      transition: color var(--transition);
+    }
+    .footer-links a:hover { color: var(--accent); }
+
+    /* ── Back to top ── */
+    .back-to-top {
+      position: fixed;
+      bottom: 2rem; right: 1.5rem;
+      width: 44px; height: 44px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      font-size: 1.2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 20px var(--shadow);
+      z-index: 50;
+      transition: var(--transition);
+      opacity: 0;
+      pointer-events: none;
+    }
+    .back-to-top.visible {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .back-to-top:hover { transform: translateY(-3px); }
+
+    /* ── Mobile sticky CTA ── */
+    .mobile-cta {
+      display: none;
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      background: var(--accent);
+      color: #fff;
+      text-align: center;
+      padding: 1rem;
+      font-weight: 700;
+      font-size: 1rem;
+      z-index: 90;
+      box-shadow: 0 -4px 20px var(--shadow);
+      transform: translateY(100%);
+      transition: transform 0.4s ease;
+    }
+    .mobile-cta.show { transform: translateY(0); }
+
+    @media (max-width: 768px) {
+      .mobile-cta { display: block; }
+      .back-to-top { bottom: 5rem; }
+      footer { padding-bottom: 5rem; }
+    }
+    @media (min-width: 769px) {
+      .mobile-cta { display: none !important; }
+    }
   </style>
 </head>
 <body>
@@ -955,7 +1124,83 @@
     </div>
   </div>
 </section>
+
+    <section id="contact">
+      <div class="contact-blob" aria-hidden="true"></div>
+      <div class="container">
+        <p class="section-label reveal">Давайте начнём</p>
+        <h2 class="section-title reveal reveal-delay-1">
+          Есть задача? Расскажите —<br>разберёмся вместе
+        </h2>
+        <p class="contact-sub reveal reveal-delay-2">
+          Без технического жаргона. Первая консультация бесплатно.
+        </p>
+        <div class="contact-inner">
+          <form class="contact-form reveal reveal-delay-2"
+                action="https://formspree.io/f/ЗАМЕНИ_НА_СВОЙ_ID"
+                method="POST">
+            <div class="form-group">
+              <label for="name">Ваше имя</label>
+              <input type="text" id="name" name="name" required
+                     placeholder="Как вас зовут?" autocomplete="name" />
+            </div>
+            <div class="form-group">
+              <label for="contact-field">Telegram или email</label>
+              <input type="text" id="contact-field" name="contact" required
+                     placeholder="@username или name@mail.ru" />
+            </div>
+            <div class="form-group">
+              <label for="message">Что нужно сделать?</label>
+              <textarea id="message" name="message" rows="4" required
+                        placeholder="Коротко опишите задачу — разберёмся вместе"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary form-submit">
+              Отправить заявку →
+            </button>
+            <div class="form-success" aria-live="polite" hidden>
+              Спасибо! Отвечу в течение часа 👋
+            </div>
+            <div class="form-error" aria-live="polite" hidden>
+              Что-то пошло не так — напишите напрямую в Telegram
+            </div>
+          </form>
+          <div class="contact-alt reveal reveal-delay-3">
+            <p class="contact-alt-title">Или напишите напрямую:</p>
+            <a href="https://t.me/elena_morozova_5555"
+               class="btn btn-outline contact-tg"
+               target="_blank" rel="noopener noreferrer">
+              ✈️ Написать в Telegram
+            </a>
+            <p class="contact-promise">Отвечаю в рабочие дни в течение часа</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
   </main>
+
+  <footer class="footer">
+    <div class="container footer-inner">
+      <a href="#hero" class="footer-logo">Алё<span class="accent">...</span>на!</a>
+      <p class="footer-copy">
+        © 2026 Алёна · Сделано с <span aria-label="любовью">♥</span> и кодом
+      </p>
+      <div class="footer-links">
+        <a href="https://t.me/elena_morozova_5555"
+           target="_blank" rel="noopener noreferrer"
+           aria-label="Telegram">✈️ Telegram</a>
+      </div>
+    </div>
+  </footer>
+
+  <button class="back-to-top" aria-label="Вернуться наверх" hidden>↑</button>
+
+  <a href="https://t.me/elena_morozova_5555"
+     class="mobile-cta"
+     target="_blank" rel="noopener noreferrer"
+     aria-label="Написать Алёне в Telegram">
+    ✈️ Написать Алёне
+  </a>
 
   <script>
     // ── Nav: scrolled state ──
@@ -997,6 +1242,54 @@
       entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
     }, { threshold: 0.1 });
     document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+    // ── Back to top ──
+    const backBtn = document.querySelector('.back-to-top');
+    backBtn.hidden = false;
+    window.addEventListener('scroll', () => {
+      backBtn.classList.toggle('visible', window.scrollY > 400);
+    }, { passive: true });
+    backBtn.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    // ── Mobile sticky CTA ──
+    const mobileCta = document.querySelector('.mobile-cta');
+    window.addEventListener('scroll', () => {
+      mobileCta.classList.toggle('show', window.scrollY > 300);
+    }, { passive: true });
+
+    // ── Contact form ──
+    const contactForm = document.querySelector('.contact-form');
+    if (contactForm) {
+      contactForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const successEl = contactForm.querySelector('.form-success');
+        const errorEl   = contactForm.querySelector('.form-error');
+        const submitBtn = contactForm.querySelector('.form-submit');
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Отправляю...';
+        try {
+          const res = await fetch(contactForm.action, {
+            method: 'POST',
+            body: new FormData(contactForm),
+            headers: { 'Accept': 'application/json' }
+          });
+          if (res.ok) {
+            successEl.hidden = false;
+            errorEl.hidden   = true;
+            contactForm.reset();
+          } else {
+            throw new Error('Network response was not ok');
+          }
+        } catch {
+          errorEl.hidden   = false;
+          successEl.hidden = true;
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Отправить заявку →';
+        }
+      });
+    }
   </script>
 </body>
 </html>
