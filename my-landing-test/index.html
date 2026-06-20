@@ -288,11 +288,21 @@
       display: flex;
       justify-content: center;
     }
-    .avatar-svg {
-      width: 100%;
-      max-width: 340px;
-      animation: float 3.5s ease-in-out infinite;
-      filter: drop-shadow(0 20px 40px rgba(167,139,250,0.2));
+    .avatar-photo {
+      width: 340px;
+      height: 340px;
+      border-radius: 50%;
+      object-fit: cover;
+      object-position: center top;
+      border: 4px solid rgba(167,139,250,0.4);
+      box-shadow:
+        0 0 0 8px rgba(167,139,250,0.1),
+        0 20px 60px rgba(167,139,250,0.25);
+      animation: avatar-in 0.8s cubic-bezier(0.34,1.56,0.64,1) both, float 3.5s ease-in-out 0.8s infinite;
+    }
+    @keyframes avatar-in {
+      from { opacity: 0; transform: scale(0.75) translateY(20px); }
+      to   { opacity: 1; transform: scale(1) translateY(0); }
     }
     @keyframes float {
       0%, 100% { transform: translateY(0); }
@@ -320,7 +330,7 @@
       .hero-sub { margin-inline: auto; }
       .hero-actions { justify-content: center; }
       .hero-avatar { order: -1; }
-      .avatar-svg { max-width: 240px; }
+      .avatar-photo { width: 240px; height: 240px; }
     }
 
     /* ── Problem ── */
@@ -915,32 +925,8 @@
       </div>
     </div>
 
-    <div class="hero-avatar" aria-label="Аватар Алёны">
-      <svg viewBox="0 0 320 400" fill="none" xmlns="http://www.w3.org/2000/svg"
-           class="avatar-svg" role="img" aria-label="Улыбающаяся Алёна с телефонной трубкой">
-        <circle cx="160" cy="200" r="155" fill="#FFF0E8"/>
-        <rect x="90" y="230" width="140" height="120" rx="30" fill="#A78BFA"/>
-        <rect x="140" y="205" width="40" height="35" rx="8" fill="#FDBCB4"/>
-        <ellipse cx="160" cy="180" rx="62" ry="68" fill="#FDBCB4"/>
-        <ellipse cx="160" cy="128" rx="62" ry="30" fill="#3D2B1F"/>
-        <rect x="98" y="128" width="22" height="80" rx="11" fill="#3D2B1F"/>
-        <rect x="200" y="128" width="22" height="80" rx="11" fill="#3D2B1F"/>
-        <path d="M100 140 Q130 115 160 118 Q190 115 220 140" stroke="#3D2B1F" stroke-width="18" stroke-linecap="round" fill="none"/>
-        <ellipse cx="138" cy="178" rx="9" ry="10" fill="#3D2B1F"/>
-        <ellipse cx="182" cy="178" rx="9" ry="10" fill="#3D2B1F"/>
-        <circle cx="141" cy="174" r="3" fill="#fff"/>
-        <circle cx="185" cy="174" r="3" fill="#fff"/>
-        <ellipse cx="122" cy="194" rx="12" ry="7" fill="#FFB5B5" opacity="0.6"/>
-        <ellipse cx="198" cy="194" rx="12" ry="7" fill="#FFB5B5" opacity="0.6"/>
-        <path d="M140 205 Q160 222 180 205" stroke="#D4887A" stroke-width="3.5" stroke-linecap="round" fill="none"/>
-        <rect x="62" y="248" width="32" height="80" rx="16" fill="#FDBCB4"/>
-        <rect x="36" y="238" width="38" height="18" rx="9" fill="#FF6B6B"/>
-        <rect x="36" y="298" width="38" height="18" rx="9" fill="#FF6B6B"/>
-        <rect x="48" y="246" width="14" height="60" rx="7" fill="#FF6B6B"/>
-        <text x="248" y="160" font-size="22" fill="#A78BFA">✦</text>
-        <text x="55"  y="170" font-size="16" fill="#34D399">✦</text>
-        <text x="260" y="240" font-size="14" fill="#FF6B6B">✦</text>
-      </svg>
+    <div class="hero-avatar">
+      <img src="аватарка.jpg" alt="Алёна — цифровой мастер" class="avatar-photo" />
     </div>
 
   </div>
