@@ -229,6 +229,99 @@
       html { scroll-behavior: auto; }
       .reveal { opacity: 1; transform: none; }
     }
+
+    /* ── Hero ── */
+    #hero {
+      position: relative;
+      min-height: calc(100vh - 72px);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      overflow: hidden;
+    }
+    .hero-blob {
+      position: absolute;
+      top: -200px; right: -150px;
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(167,139,250,0.18) 0%, transparent 70%);
+      pointer-events: none;
+      animation: drift 8s ease-in-out infinite alternate;
+    }
+    @keyframes drift {
+      from { transform: translate(0, 0); }
+      to   { transform: translate(40px, 30px); }
+    }
+    .hero-inner {
+      display: grid;
+      grid-template-columns: 1fr 420px;
+      gap: 4rem;
+      align-items: center;
+      padding-block: 5rem;
+    }
+    .hero-title {
+      font-family: 'Bricolage Grotesque', sans-serif;
+      font-size: var(--font-hero);
+      font-weight: 800;
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      margin-bottom: 1.5rem;
+    }
+    .hero-sub {
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      max-width: 42ch;
+      margin-bottom: 2rem;
+      line-height: 1.7;
+    }
+    .hero-sub strong { color: var(--text); }
+    .hero-actions {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+    }
+    .hero-microcopy {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+    .hero-avatar {
+      display: flex;
+      justify-content: center;
+    }
+    .avatar-svg {
+      width: 100%;
+      max-width: 340px;
+      animation: float 3.5s ease-in-out infinite;
+      filter: drop-shadow(0 20px 40px rgba(167,139,250,0.2));
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50%       { transform: translateY(-12px); }
+    }
+    .hero-scroll {
+      display: flex;
+      justify-content: center;
+      padding-bottom: 2rem;
+      color: var(--text-muted);
+      animation: bounce 2s ease-in-out infinite;
+      font-size: 1.4rem;
+    }
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50%       { transform: translateY(6px); }
+    }
+
+    @media (max-width: 900px) {
+      .hero-inner {
+        grid-template-columns: 1fr;
+        text-align: center;
+        gap: 2.5rem;
+      }
+      .hero-sub { margin-inline: auto; }
+      .hero-actions { justify-content: center; }
+      .hero-avatar { order: -1; }
+      .avatar-svg { max-width: 240px; }
+    }
   </style>
 </head>
 <body>
@@ -250,9 +343,62 @@
 
   <!-- Контент будет добавлен в следующих задачах -->
   <main>
-    <section id="hero" style="min-height:100vh;display:flex;align-items:center;justify-content:center;">
-      <h1 style="font-family:'Bricolage Grotesque',sans-serif;">Алё...на! 👋 Скелет готов</h1>
-    </section>
+    <section id="hero">
+  <div class="hero-blob" aria-hidden="true"></div>
+  <div class="container hero-inner">
+
+    <div class="hero-text">
+      <p class="section-label">Цифровой мастер · Делаю с душой</p>
+      <h1 class="hero-title">
+        Алё<span class="accent">...</span>на!<br>
+        Создаю сайты,<br>
+        визитки и <span class="accent-2">AI-агентов</span><br>
+        — под ключ
+      </h1>
+      <p class="hero-sub">
+        Помогаю экспертам и малому бизнесу выглядеть
+        профессионально в интернете.<br>
+        <strong>Первая консультация — бесплатно.</strong>
+      </p>
+      <div class="hero-actions">
+        <a href="#contact" class="btn btn-primary hero-btn">Обсудить проект →</a>
+        <span class="hero-microcopy">Без обязательств · Отвечу в течение часа</span>
+      </div>
+    </div>
+
+    <div class="hero-avatar" aria-label="Аватар Алёны">
+      <svg viewBox="0 0 320 400" fill="none" xmlns="http://www.w3.org/2000/svg"
+           class="avatar-svg" role="img" aria-label="Улыбающаяся Алёна с телефонной трубкой">
+        <circle cx="160" cy="200" r="155" fill="#FFF0E8"/>
+        <rect x="90" y="230" width="140" height="120" rx="30" fill="#A78BFA"/>
+        <rect x="140" y="205" width="40" height="35" rx="8" fill="#FDBCB4"/>
+        <ellipse cx="160" cy="180" rx="62" ry="68" fill="#FDBCB4"/>
+        <ellipse cx="160" cy="128" rx="62" ry="30" fill="#3D2B1F"/>
+        <rect x="98" y="128" width="22" height="80" rx="11" fill="#3D2B1F"/>
+        <rect x="200" y="128" width="22" height="80" rx="11" fill="#3D2B1F"/>
+        <path d="M100 140 Q130 115 160 118 Q190 115 220 140" stroke="#3D2B1F" stroke-width="18" stroke-linecap="round" fill="none"/>
+        <ellipse cx="138" cy="178" rx="9" ry="10" fill="#3D2B1F"/>
+        <ellipse cx="182" cy="178" rx="9" ry="10" fill="#3D2B1F"/>
+        <circle cx="141" cy="174" r="3" fill="#fff"/>
+        <circle cx="185" cy="174" r="3" fill="#fff"/>
+        <ellipse cx="122" cy="194" rx="12" ry="7" fill="#FFB5B5" opacity="0.6"/>
+        <ellipse cx="198" cy="194" rx="12" ry="7" fill="#FFB5B5" opacity="0.6"/>
+        <path d="M140 205 Q160 222 180 205" stroke="#D4887A" stroke-width="3.5" stroke-linecap="round" fill="none"/>
+        <rect x="62" y="248" width="32" height="80" rx="16" fill="#FDBCB4"/>
+        <rect x="36" y="238" width="38" height="18" rx="9" fill="#FF6B6B"/>
+        <rect x="36" y="298" width="38" height="18" rx="9" fill="#FF6B6B"/>
+        <rect x="48" y="246" width="14" height="60" rx="7" fill="#FF6B6B"/>
+        <text x="248" y="160" font-size="22" fill="#A78BFA">✦</text>
+        <text x="55"  y="170" font-size="16" fill="#34D399">✦</text>
+        <text x="260" y="240" font-size="14" fill="#FF6B6B">✦</text>
+      </svg>
+    </div>
+
+  </div>
+  <a href="#problem" class="hero-scroll" aria-label="Прокрутить вниз">
+    <span>↓</span>
+  </a>
+</section>
   </main>
 
   <script>
