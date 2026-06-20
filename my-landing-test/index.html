@@ -525,6 +525,82 @@
     @media (max-width: 768px) {
       .works-grid { grid-template-columns: 1fr; }
     }
+
+    /* ── Process ── */
+    #process {
+      padding-block: var(--section-gap);
+      background: var(--surface);
+    }
+    .process-steps {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0;
+      margin-top: 3rem;
+      position: relative;
+    }
+    .process-steps::before {
+      content: '';
+      position: absolute;
+      top: 2.2rem;
+      left: 3rem;
+      right: 3rem;
+      height: 2px;
+      background: repeating-linear-gradient(
+        90deg, var(--accent) 0, var(--accent) 8px, transparent 8px, transparent 16px
+      );
+    }
+    .process-step {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 0 1.5rem;
+      position: relative;
+    }
+    .step-num {
+      font-family: 'Bricolage Grotesque', sans-serif;
+      font-size: 3rem;
+      font-weight: 800;
+      color: var(--accent);
+      line-height: 1;
+      margin-bottom: 1rem;
+      background: var(--surface);
+      position: relative;
+      z-index: 1;
+      padding-right: 0.5rem;
+    }
+    .step-title {
+      font-family: 'Bricolage Grotesque', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+    .step-desc {
+      font-size: 0.875rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+      margin-bottom: 0.75rem;
+    }
+    .step-result {
+      font-size: 0.875rem;
+      color: var(--accent-3);
+      font-weight: 600;
+    }
+    @media (max-width: 900px) {
+      .process-steps {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+      .process-steps::before {
+        top: 0; bottom: 0;
+        left: 1.8rem; right: auto;
+        width: 2px; height: auto;
+        background: repeating-linear-gradient(
+          180deg, var(--accent) 0, var(--accent) 8px, transparent 8px, transparent 16px
+        );
+      }
+      .process-step { flex-direction: row; gap: 1.5rem; align-items: flex-start; padding: 0 0 0 1rem; }
+      .step-num { font-size: 2rem; min-width: 48px; text-align: center; padding: 0; }
+    }
   </style>
 </head>
 <body>
@@ -718,6 +794,52 @@
       ✨ Это мои учебные работы — я только начинаю путь.
       Именно поэтому каждому проекту уделяю максимум внимания.
     </p>
+  </div>
+</section>
+
+<section id="process">
+  <div class="container">
+    <p class="section-label reveal">Прозрачность</p>
+    <h2 class="section-title reveal reveal-delay-1">Как мы будем работать</h2>
+    <div class="process-steps">
+
+      <div class="process-step reveal reveal-delay-1">
+        <div class="step-num" aria-hidden="true">01</div>
+        <div class="step-body">
+          <h3 class="step-title">Звонок — 20 минут</h3>
+          <p class="step-desc">Разбираем задачу, отвечаю на вопросы о процессе и стоимости</p>
+          <p class="step-result">→ Вы понимаете, что и как будет сделано</p>
+        </div>
+      </div>
+
+      <div class="process-step reveal reveal-delay-2">
+        <div class="step-num" aria-hidden="true">02</div>
+        <div class="step-body">
+          <h3 class="step-title">ТЗ и договор — 1–2 дня</h3>
+          <p class="step-desc">Фиксируем требования, дизайн и функционал письменно</p>
+          <p class="step-result">→ Документ, который защищает нас обоих</p>
+        </div>
+      </div>
+
+      <div class="process-step reveal reveal-delay-3">
+        <div class="step-num" aria-hidden="true">03</div>
+        <div class="step-body">
+          <h3 class="step-title">Разработка — 7–14 дней</h3>
+          <p class="step-desc">Еженедельные апдейты, вы видите прогресс на каждом этапе</p>
+          <p class="step-result">→ Никаких сюрпризов на финале</p>
+        </div>
+      </div>
+
+      <div class="process-step reveal reveal-delay-3">
+        <div class="step-num" aria-hidden="true">04</div>
+        <div class="step-body">
+          <h3 class="step-title">Сдача и поддержка</h3>
+          <p class="step-desc">Обучаю пользоваться результатом, месяц бесплатных правок</p>
+          <p class="step-result">→ Вы не остаётесь одни с готовым продуктом</p>
+        </div>
+      </div>
+
+    </div>
   </div>
 </section>
   </main>
