@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Елена Морозова</title>
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --bg: #0a0a0f;
+      --card-bg: #12111a;
+      --border: rgba(255, 200, 230, 0.07);
+      --accent1: #c084fc;   /* мягкая лаванда */
+      --accent2: #f9a8d4;   /* нежная роза */
+      --accent3: #e879f9;   /* фуксия */
+      --accent4: #fcd34d;   /* тёплое золото */
+      --text: #f1e8f7;
+      --muted: #b8a8cc;
+    }
+
+    html, body { height: 100%; }
+
+    body {
+      background: var(--bg);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 24px 16px;
+      overflow-x: hidden;
+    }
+
+    /* Ambient glow — тёплая роза сверху */
+    body::before {
+      content: '';
+      position: fixed;
+      top: -25%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 700px;
+      height: 700px;
+      background: radial-gradient(ellipse, rgba(192, 132, 252, 0.12) 0%, rgba(249, 168, 212, 0.07) 50%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Мягкое фуксия-золото снизу */
+    body::after {
+      content: '';
+      position: fixed;
+      bottom: -20%;
+      left: 20%;
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(ellipse, rgba(249, 168, 212, 0.09) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .card {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 480px;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 32px;
+      padding: 48px 40px 44px;
+      text-align: center;
+      box-shadow:
+        0 0 0 1px rgba(255, 200, 230, 0.04),
+        0 24px 80px rgba(0, 0, 0, 0.65),
+        0 0 60px rgba(192, 132, 252, 0.07),
+        0 0 120px rgba(249, 168, 212, 0.05);
+      animation: cardIn 0.75s cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+
+    @keyframes cardIn {
+      from { opacity: 0; transform: translateY(28px) scale(0.97); }
+      to   { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    /* Верхняя линия — градиент роза-лаванда */
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 50%;
+      transform: translateX(-50%);
+      width: 55%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--accent2), var(--accent1), transparent);
+      border-radius: 0 0 4px 4px;
+    }
+
+    /* Avatar — градиентный круг с SVG-символом */
+    .avatar {
+      width: 92px;
+      height: 92px;
+      margin: 0 auto 26px;
+      border-radius: 50%;
+      background: linear-gradient(145deg, #2a1a3e, #1e1228);
+      border: 2px solid rgba(192, 132, 252, 0.25);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      animation: avatarGlow 4s ease-in-out infinite alternate;
+    }
+
+    /* Внешнее кольцо-ореол */
+    .avatar::before {
+      content: '';
+      position: absolute;
+      inset: -6px;
+      border-radius: 50%;
+      background: conic-gradient(from 0deg, var(--accent2), var(--accent1), var(--accent3), var(--accent2));
+      opacity: 0.25;
+      animation: rotateBorder 6s linear infinite;
+      z-index: -1;
+    }
+
+    .avatar::after {
+      content: '';
+      position: absolute;
+      inset: -5px;
+      border-radius: 50%;
+      background: var(--card-bg);
+      z-index: -1;
+    }
+
+    @keyframes rotateBorder {
+      to { transform: rotate(360deg); }
+    }
+
+    @keyframes avatarGlow {
+      from { box-shadow: 0 0 20px rgba(192, 132, 252, 0.25), 0 0 40px rgba(249, 168, 212, 0.1); }
+      to   { box-shadow: 0 0 36px rgba(192, 132, 252, 0.45), 0 0 70px rgba(249, 168, 212, 0.2); }
+    }
+
+    /* Sparkle SVG внутри аватара */
+    .avatar-icon {
+      width: 44px;
+      height: 44px;
+      filter: drop-shadow(0 0 8px rgba(192, 132, 252, 0.8));
+      animation: iconPulse 3s ease-in-out infinite alternate;
+    }
+
+    @keyframes iconPulse {
+      from { filter: drop-shadow(0 0 6px rgba(192, 132, 252, 0.6)); transform: scale(1); }
+      to   { filter: drop-shadow(0 0 14px rgba(249, 168, 212, 0.9)); transform: scale(1.06); }
+    }
+
+    /* Имя */
+    .name {
+      font-size: clamp(28px, 7vw, 36px);
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      line-height: 1.1;
+      margin-bottom: 10px;
+      background: linear-gradient(135deg, #fff 0%, var(--accent2) 45%, var(--accent1) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      filter: drop-shadow(0 0 18px rgba(249, 168, 212, 0.35));
+      animation: nameShimmer 5s ease-in-out infinite alternate;
+    }
+
+    @keyframes nameShimmer {
+      from { filter: drop-shadow(0 0 10px rgba(249, 168, 212, 0.3)); }
+      to   { filter: drop-shadow(0 0 26px rgba(192, 132, 252, 0.5)); }
+    }
+
+    /* Tagline под именем */
+    .tagline {
+      font-size: 13px;
+      color: rgba(252, 211, 77, 0.7);
+      font-weight: 500;
+      letter-spacing: 0.3px;
+      margin-bottom: 18px;
+      font-style: italic;
+    }
+
+    /* Role badge */
+    .role-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(192, 132, 252, 0.1);
+      border: 1px solid rgba(192, 132, 252, 0.2);
+      border-radius: 100px;
+      padding: 5px 16px;
+      font-size: 11.5px;
+      font-weight: 600;
+      color: var(--accent1);
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      margin-bottom: 22px;
+    }
+
+    /* Divider */
+    .divider {
+      width: 36px;
+      height: 1.5px;
+      background: linear-gradient(90deg, var(--accent2), var(--accent1));
+      border-radius: 2px;
+      margin: 0 auto 20px;
+      opacity: 0.6;
+    }
+
+    /* Описание */
+    .description {
+      font-size: 15px;
+      line-height: 1.75;
+      color: var(--muted);
+      margin-bottom: 32px;
+      padding: 0 6px;
+    }
+
+    .description em {
+      font-style: normal;
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    /* Теги */
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: center;
+      margin-bottom: 30px;
+    }
+
+    .tag {
+      background: rgba(192, 132, 252, 0.06);
+      border: 1px solid rgba(192, 132, 252, 0.13);
+      border-radius: 10px;
+      padding: 6px 13px;
+      font-size: 12px;
+      color: var(--muted);
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      transition: border-color 0.25s, color 0.25s, background 0.25s;
+    }
+
+    .tag:hover {
+      border-color: rgba(249, 168, 212, 0.35);
+      background: rgba(249, 168, 212, 0.07);
+      color: var(--text);
+    }
+
+    /* Кнопка Telegram */
+    .btn-telegram {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      width: 100%;
+      padding: 16px 28px;
+      background: linear-gradient(135deg, #a855f7, #c084fc, #f472b6);
+      border: none;
+      border-radius: 18px;
+      color: #fff;
+      font-size: 16px;
+      font-weight: 700;
+      text-decoration: none;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.22s ease, box-shadow 0.22s ease;
+      box-shadow:
+        0 4px 28px rgba(168, 85, 247, 0.35),
+        0 0 0 1px rgba(255, 255, 255, 0.06) inset;
+      letter-spacing: 0.2px;
+    }
+
+    /* Блик сверху */
+    .btn-telegram::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 50%;
+      background: linear-gradient(180deg, rgba(255,255,255,0.12), transparent);
+      border-radius: 18px 18px 0 0;
+      pointer-events: none;
+    }
+
+    /* Шиммер при наведении */
+    .btn-telegram::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 18px;
+      box-shadow: 0 0 0 0 rgba(192, 132, 252, 0.5);
+      animation: btnPulse 2.8s ease-out infinite;
+    }
+
+    @keyframes btnPulse {
+      0%   { box-shadow: 0 0 0 0 rgba(192, 132, 252, 0.4); }
+      70%  { box-shadow: 0 0 0 16px rgba(192, 132, 252, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(192, 132, 252, 0); }
+    }
+
+    .btn-telegram:hover {
+      transform: translateY(-2px) scale(1.01);
+      box-shadow:
+        0 10px 40px rgba(168, 85, 247, 0.5),
+        0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+    }
+
+    .btn-telegram:active {
+      transform: translateY(0) scale(0.98);
+    }
+
+    .icon-tg {
+      width: 22px;
+      height: 22px;
+      flex-shrink: 0;
+    }
+
+    /* Частицы */
+    .particles {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    .particle {
+      position: absolute;
+      border-radius: 50%;
+      opacity: 0;
+      animation: floatUp linear infinite;
+    }
+
+    @keyframes floatUp {
+      0%   { transform: translateY(100vh) scale(0) rotate(0deg); opacity: 0; }
+      8%   { opacity: 0.5; }
+      92%  { opacity: 0.2; }
+      100% { transform: translateY(-8vh) scale(1) rotate(180deg); opacity: 0; }
+    }
+
+    /* Footer */
+    .footer {
+      margin-top: 24px;
+      font-size: 11px;
+      color: rgba(184, 168, 204, 0.3);
+      letter-spacing: 0.5px;
+    }
+
+    @media (max-width: 420px) {
+      .card {
+        padding: 36px 22px 34px;
+        border-radius: 24px;
+      }
+      .avatar {
+        width: 80px;
+        height: 80px;
+      }
+      .avatar-icon {
+        width: 38px;
+        height: 38px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="particles" id="particles"></div>
+
+  <div class="card">
+
+    <!-- Аватар с символом бесконечности -->
+    <div class="avatar">
+      <svg class="avatar-icon" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- Символ бесконечности ∞ -->
+        <path d="M22 22C22 22 16 13 9.5 13C3 13 3 31 9.5 31C16 31 22 22 22 22Z
+                 M22 22C22 22 28 13 34.5 13C41 13 41 31 34.5 31C28 31 22 22 22 22Z"
+              stroke="url(#inf-grad)" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
+        <!-- Маленькие звёздочки по углам -->
+        <circle cx="8" cy="8" r="1.2" fill="#fcd34d" opacity="0.7"/>
+        <circle cx="36" cy="8" r="0.9" fill="#f9a8d4" opacity="0.6"/>
+        <circle cx="8" cy="36" r="0.8" fill="#c084fc" opacity="0.5"/>
+        <circle cx="36" cy="36" r="1.1" fill="#fcd34d" opacity="0.6"/>
+        <defs>
+          <linearGradient id="inf-grad" x1="3" y1="13" x2="41" y2="31" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stop-color="#f9a8d4"/>
+            <stop offset="50%" stop-color="#c084fc"/>
+            <stop offset="100%" stop-color="#e879f9"/>
+          </linearGradient>
+        </defs>
+      </svg>
+    </div>
+
+    <!-- Имя -->
+    <h1 class="name">Елена Морозова</h1>
+
+    <!-- Подзаголовок -->
+    <p class="tagline">Верю, что призвание есть у каждого</p>
+
+    <!-- Бейдж -->
+    <div class="role-badge">
+      <svg width="11" height="11" viewBox="0 0 24 24" fill="none">
+        <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" fill="currentColor"/>
+      </svg>
+      AI-эксперт
+    </div>
+
+    <!-- Разделитель -->
+    <div class="divider"></div>
+
+    <!-- Описание -->
+    <p class="description">
+      Помогаю людям найти своё <em>призвание</em> с помощью <em>искусственного интеллекта</em>. Создаю <em>AI-агентов</em>, обучаю <em>вайбкодингу</em>.
+    </p>
+
+    <!-- Теги -->
+    <div class="tags">
+      <span class="tag">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none">
+          <path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        Призвание
+      </span>
+      <span class="tag">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none">
+          <rect x="3" y="3" width="7" height="7" rx="1" stroke="currentColor" stroke-width="2"/>
+          <rect x="14" y="3" width="7" height="7" rx="1" stroke="currentColor" stroke-width="2"/>
+          <rect x="3" y="14" width="7" height="7" rx="1" stroke="currentColor" stroke-width="2"/>
+          <path d="M14 17.5h7M17.5 14v7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        AI-агенты
+      </span>
+      <span class="tag">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none">
+          <path d="M16 18l2-2-2-2M8 6L6 8l2 2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M12 2L2 7l10 5 10-5-10-5z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+          <path d="M2 17l10 5 10-5M2 12l10 5 10-5" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+        </svg>
+        Вайбкодинг
+      </span>
+      <span class="tag">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none">
+          <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2M9 11a4 4 0 100-8 4 4 0 000 8zM23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        Обучение
+      </span>
+    </div>
+
+    <!-- Кнопка Telegram -->
+    <a href="https://t.me/elena_morozova_5555" class="btn-telegram" target="_blank" rel="noopener">
+      <svg class="icon-tg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0z" fill="rgba(255,255,255,0.12)"/>
+        <path d="M5.491 11.74L18.297 6.68c.633-.244 1.185.155.98 1.115l-2.163 10.188c-.163.73-.597.907-1.21.564l-3.29-2.425-1.589 1.529c-.176.176-.324.324-.663.324l.236-3.353 6.084-5.494c.265-.235-.058-.365-.41-.13L7.55 14.371l-3.217-.999c-.7-.219-.714-.7.146-1.033z" fill="white"/>
+      </svg>
+      Написать мне
+    </a>
+
+    <div class="footer">@elena_morozova_5555</div>
+
+  </div>
+
+  <script>
+    const container = document.getElementById('particles');
+    const colors = [
+      'rgba(192,132,252,0.6)',
+      'rgba(249,168,212,0.6)',
+      'rgba(232,121,249,0.5)',
+      'rgba(252,211,77,0.4)',
+    ];
+    for (let i = 0; i < 22; i++) {
+      const p = document.createElement('div');
+      p.className = 'particle';
+      const size = Math.random() < 0.25 ? 3 : 2;
+      p.style.cssText = `
+        left: ${Math.random() * 100}%;
+        width: ${size}px;
+        height: ${size}px;
+        background: ${colors[Math.floor(Math.random() * colors.length)]};
+        animation-duration: ${10 + Math.random() * 16}s;
+        animation-delay: ${Math.random() * 14}s;
+      `;
+      container.appendChild(p);
+    }
+  </script>
+</body>
+</html>

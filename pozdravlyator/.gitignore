@@ -1,0 +1,5 @@
+output/
+assets/render_font.ttf
+__pycache__/
+*.pyc
+.env
