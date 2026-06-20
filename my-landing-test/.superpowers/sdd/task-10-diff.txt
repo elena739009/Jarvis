@@ -1,0 +1,150 @@
+diff --git a/my-landing-test/index.html b/my-landing-test/index.html
+index e2e9fae..ae81f6d 100644
+--- a/my-landing-test/index.html
++++ b/my-landing-test/index.html
+@@ -1207,16 +1207,26 @@
+     const navWrapper = document.querySelector('.nav-wrapper');
+     const navLinks   = document.querySelectorAll('.nav-link');
+     const sections   = document.querySelectorAll('main section[id]');
++    const backToTop  = document.querySelector('.back-to-top');
++    const mobileCta  = document.querySelector('.mobile-cta');
+ 
+-    window.addEventListener('scroll', () => {
+-      navWrapper.classList.toggle('scrolled', window.scrollY > 20);
+-    }, { passive: true });
++    function onScroll() {
++      const y = window.scrollY;
++      navWrapper.classList.toggle('scrolled', y > 20);
++      backToTop.classList.toggle('visible', y > 300);
++      // Мобильный CTA: показать после 300px, скрыть у секции contact
++      const contactTop = document.getElementById('contact')?.getBoundingClientRect().top ?? 9999;
++      const shouldShow = y > 300 && contactTop > window.innerHeight * 0.5;
++      mobileCta.classList.toggle('show', shouldShow);
++    }
++
++    window.addEventListener('scroll', onScroll, { passive: true });
+ 
+     // ── Nav: гамбургер ──
+     const burger = document.querySelector('.nav-burger');
+     burger.addEventListener('click', () => {
+       const isOpen = navWrapper.classList.toggle('open');
+-      burger.setAttribute('aria-expanded', isOpen);
++      burger.setAttribute('aria-expanded', String(isOpen));
+     });
+     document.querySelectorAll('.nav-link').forEach(link => {
+       link.addEventListener('click', () => {
+@@ -1225,17 +1235,16 @@
+       });
+     });
+ 
+-    // ── Nav: активный пункт по скроллу ──
+-    const observer = new IntersectionObserver((entries) => {
++    // ── Nav: активный пункт ──
++    const sectionObserver = new IntersectionObserver((entries) => {
+       entries.forEach(entry => {
+-        if (entry.isIntersecting) {
+-          navLinks.forEach(l => l.classList.remove('active'));
+-          const active = document.querySelector(`.nav-link[href="#${entry.target.id}"]`);
+-          if (active) active.classList.add('active');
+-        }
++        if (!entry.isIntersecting) return;
++        navLinks.forEach(l => l.classList.remove('active'));
++        const active = document.querySelector(`.nav-link[href="#${entry.target.id}"]`);
++        if (active) active.classList.add('active');
+       });
+     }, { rootMargin: '-40% 0px -55% 0px' });
+-    sections.forEach(s => observer.observe(s));
++    sections.forEach(s => sectionObserver.observe(s));
+ 
+     // ── Reveal при скролле ──
+     const revealObserver = new IntersectionObserver((entries) => {
+@@ -1243,53 +1252,45 @@
+     }, { threshold: 0.1 });
+     document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+ 
+-    // ── Back to top ──
+-    const backBtn = document.querySelector('.back-to-top');
+-    backBtn.hidden = false;
+-    window.addEventListener('scroll', () => {
+-      backBtn.classList.toggle('visible', window.scrollY > 400);
+-    }, { passive: true });
+-    backBtn.addEventListener('click', () => {
+-      window.scrollTo({ top: 0, behavior: 'smooth' });
+-    });
++    // ── Кнопка наверх ──
++    backToTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
++
++    // ── Форма ──
++    const form        = document.querySelector('.contact-form');
++    const formSuccess = form?.querySelector('.form-success');
++    const formError   = form?.querySelector('.form-error');
++
++    form?.addEventListener('submit', async (e) => {
++      e.preventDefault();
++      const submitBtn = form.querySelector('.form-submit');
++      submitBtn.disabled = true;
++      submitBtn.textContent = 'Отправляем...';
++      formSuccess.hidden = true;
++      formError.hidden   = true;
+ 
+-    // ── Mobile sticky CTA ──
+-    const mobileCta = document.querySelector('.mobile-cta');
+-    window.addEventListener('scroll', () => {
+-      mobileCta.classList.toggle('show', window.scrollY > 300);
+-    }, { passive: true });
+-
+-    // ── Contact form ──
+-    const contactForm = document.querySelector('.contact-form');
+-    if (contactForm) {
+-      contactForm.addEventListener('submit', async (e) => {
+-        e.preventDefault();
+-        const successEl = contactForm.querySelector('.form-success');
+-        const errorEl   = contactForm.querySelector('.form-error');
+-        const submitBtn = contactForm.querySelector('.form-submit');
+-        submitBtn.disabled = true;
+-        submitBtn.textContent = 'Отправляю...';
+-        try {
+-          const res = await fetch(contactForm.action, {
+-            method: 'POST',
+-            body: new FormData(contactForm),
+-            headers: { 'Accept': 'application/json' }
+-          });
+-          if (res.ok) {
+-            successEl.hidden = false;
+-            errorEl.hidden   = true;
+-            contactForm.reset();
+-          } else {
+-            throw new Error('Network response was not ok');
+-          }
+-        } catch {
+-          errorEl.hidden   = false;
+-          successEl.hidden = true;
+-          submitBtn.disabled = false;
++      try {
++        const res = await fetch(form.action, {
++          method: 'POST',
++          body: new FormData(form),
++          headers: { 'Accept': 'application/json' }
++        });
++        if (res.ok) {
++          formSuccess.hidden = false;
++          form.reset();
+           submitBtn.textContent = 'Отправить заявку →';
++        } else {
++          throw new Error('Server error');
+         }
+-      });
+-    }
++      } catch {
++        formError.hidden = false;
++        submitBtn.textContent = 'Отправить заявку →';
++      } finally {
++        submitBtn.disabled = false;
++      }
++    });
++
++    // Инициализация на загрузке
++    onScroll();
+   </script>
+ </body>
+ </html>

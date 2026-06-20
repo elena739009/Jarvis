@@ -1,0 +1,816 @@
+diff --git a/my-landing-test/index.html b/my-landing-test/index.html
+index 8321f12..e2e9fae 100644
+--- a/my-landing-test/index.html
++++ b/my-landing-test/index.html
+@@ -361,6 +361,485 @@
+     @media (max-width: 768px) {
+       .problem-grid { grid-template-columns: 1fr; }
+     }
++
++    /* ── Services ── */
++    #services {
++      padding-block: var(--section-gap);
++      background: var(--surface);
++    }
++    .services-grid {
++      display: grid;
++      grid-template-columns: repeat(3, 1fr);
++      gap: 1.5rem;
++      margin-top: 3rem;
++      align-items: start;
++    }
++    .service-card {
++      background: var(--bg);
++      border-radius: var(--radius);
++      padding: 2rem;
++      border: 1px solid var(--border);
++      position: relative;
++      transition: transform var(--transition), box-shadow var(--transition);
++    }
++    .service-card:hover {
++      transform: translateY(-6px);
++      box-shadow: 0 20px 50px var(--shadow);
++    }
++    .service-card--featured {
++      background: #fff;
++      border-color: var(--accent);
++      box-shadow: 0 8px 30px var(--shadow);
++    }
++    .service-badge {
++      position: absolute;
++      top: -12px; right: 20px;
++      background: var(--accent);
++      color: #fff;
++      font-size: 0.75rem;
++      font-weight: 700;
++      padding: 4px 12px;
++      border-radius: 50px;
++      letter-spacing: 0.05em;
++    }
++    .service-icon {
++      font-size: 2.5rem;
++      margin-bottom: 1rem;
++    }
++    .service-title {
++      font-family: 'Bricolage Grotesque', sans-serif;
++      font-size: var(--font-h3);
++      font-weight: 700;
++      margin-bottom: 0.4rem;
++    }
++    .service-for {
++      font-size: 0.875rem;
++      color: var(--text-muted);
++      margin-bottom: 1.25rem;
++    }
++    .service-list {
++      display: flex;
++      flex-direction: column;
++      gap: 0.5rem;
++      margin-bottom: 1.5rem;
++    }
++    .service-list li {
++      font-size: 0.9rem;
++      color: var(--text);
++      padding-left: 1.2rem;
++      position: relative;
++    }
++    .service-list li::before {
++      content: '✓';
++      position: absolute;
++      left: 0;
++      color: var(--accent-3);
++      font-weight: 700;
++    }
++    .service-price {
++      font-family: 'Bricolage Grotesque', sans-serif;
++      font-size: 1.5rem;
++      font-weight: 800;
++      color: var(--accent);
++      margin-bottom: 1.25rem;
++    }
++    .service-cta { width: 100%; justify-content: center; }
++
++    @media (max-width: 900px) {
++      .services-grid { grid-template-columns: 1fr; max-width: 480px; margin-inline: auto; }
++    }
++
++    /* ── Works ── */
++    #works {
++      padding-block: var(--section-gap);
++    }
++    .works-grid {
++      display: grid;
++      grid-template-columns: repeat(2, 1fr);
++      gap: 2rem;
++      margin-top: 3rem;
++    }
++    .work-card {
++      background: var(--surface);
++      border-radius: var(--radius);
++      overflow: hidden;
++      border: 1px solid var(--border);
++      transition: transform var(--transition), box-shadow var(--transition);
++    }
++    .work-card:hover {
++      transform: translateY(-6px);
++      box-shadow: 0 20px 50px rgba(0,0,0,0.1);
++    }
++    .work-preview {
++      height: 220px;
++      display: flex;
++      align-items: center;
++      justify-content: center;
++    }
++    .work-preview--purple {
++      background: linear-gradient(135deg, #A78BFA 0%, #7C3AED 100%);
++    }
++    .work-preview--coral {
++      background: linear-gradient(135deg, #FF6B6B 0%, #FF8E53 100%);
++    }
++    .work-preview-text {
++      font-family: 'Bricolage Grotesque', sans-serif;
++      font-size: 1.8rem;
++      font-weight: 800;
++      color: rgba(255,255,255,0.9);
++      text-align: center;
++      line-height: 1.2;
++    }
++    .work-info { padding: 1.5rem; }
++    .work-tags {
++      display: flex;
++      flex-wrap: wrap;
++      gap: 0.5rem;
++      margin-bottom: 0.75rem;
++    }
++    .tag {
++      display: inline-block;
++      font-size: 0.75rem;
++      font-weight: 600;
++      padding: 3px 10px;
++      border-radius: 50px;
++      background: var(--border);
++      color: var(--text-muted);
++    }
++    .tag--purple { background: rgba(167,139,250,0.15); color: #7C3AED; }
++    .tag--green  { background: rgba(52,211,153,0.15);  color: #059669; }
++    .work-title {
++      font-family: 'Bricolage Grotesque', sans-serif;
++      font-size: 1.2rem;
++      font-weight: 700;
++      margin-bottom: 0.5rem;
++    }
++    .work-desc { font-size: 0.9rem; color: var(--text-muted); line-height: 1.6; }
++    .works-disclaimer {
++      margin-top: 2.5rem;
++      text-align: center;
++      font-style: italic;
++      color: var(--text-muted);
++      font-size: 0.95rem;
++    }
++    @media (max-width: 768px) {
++      .works-grid { grid-template-columns: 1fr; }
++    }
++
++    /* ── Process ── */
++    #process {
++      padding-block: var(--section-gap);
++      background: var(--surface);
++    }
++    .process-steps {
++      display: grid;
++      grid-template-columns: repeat(4, 1fr);
++      gap: 0;
++      margin-top: 3rem;
++      position: relative;
++    }
++    .process-steps::before {
++      content: '';
++      position: absolute;
++      top: 2.2rem;
++      left: 3rem;
++      right: 3rem;
++      height: 2px;
++      background: repeating-linear-gradient(
++        90deg, var(--accent) 0, var(--accent) 8px, transparent 8px, transparent 16px
++      );
++    }
++    .process-step {
++      display: flex;
++      flex-direction: column;
++      align-items: flex-start;
++      padding: 0 1.5rem;
++      position: relative;
++    }
++    .step-num {
++      font-family: 'Bricolage Grotesque', sans-serif;
++      font-size: 3rem;
++      font-weight: 800;
++      color: var(--accent);
++      line-height: 1;
++      margin-bottom: 1rem;
++      background: var(--surface);
++      position: relative;
++      z-index: 1;
++      padding-right: 0.5rem;
++    }
++    .step-title {
++      font-family: 'Bricolage Grotesque', sans-serif;
++      font-size: 1rem;
++      font-weight: 700;
++      margin-bottom: 0.5rem;
++    }
++    .step-desc {
++      font-size: 0.875rem;
++      color: var(--text-muted);
++      line-height: 1.5;
++      margin-bottom: 0.75rem;
++    }
++    .step-result {
++      font-size: 0.875rem;
++      color: var(--accent-3);
++      font-weight: 600;
++    }
++    @media (max-width: 900px) {
++      .process-steps {
++        grid-template-columns: 1fr;
++        gap: 2rem;
++      }
++      .process-steps::before {
++        top: 0; bottom: 0;
++        left: 1.8rem; right: auto;
++        width: 2px; height: auto;
++        background: repeating-linear-gradient(
++          180deg, var(--accent) 0, var(--accent) 8px, transparent 8px, transparent 16px
++        );
++      }
++      .process-step { flex-direction: row; gap: 1.5rem; align-items: flex-start; padding: 0 0 0 1rem; }
++      .step-num { font-size: 2rem; min-width: 48px; text-align: center; padding: 0; }
++    }
++
++    /* ── Trust ── */
++    #trust {
++      padding-block: var(--section-gap);
++    }
++    .trust-grid {
++      display: grid;
++      grid-template-columns: repeat(4, 1fr);
++      gap: 1.25rem;
++      margin-top: 3rem;
++    }
++    .trust-card {
++      background: var(--surface);
++      border-radius: var(--radius);
++      padding: 1.75rem;
++      border: 1px solid var(--border);
++      transition: transform var(--transition), box-shadow var(--transition);
++    }
++    .trust-card:hover {
++      transform: translateY(-4px);
++      box-shadow: 0 12px 30px rgba(52,211,153,0.1);
++      border-color: var(--accent-3);
++    }
++    .trust-icon {
++      display: block;
++      font-size: 2rem;
++      margin-bottom: 0.75rem;
++    }
++    .trust-title {
++      font-family: 'Bricolage Grotesque', sans-serif;
++      font-size: 1.05rem;
++      font-weight: 700;
++      margin-bottom: 0.5rem;
++    }
++    .trust-desc {
++      font-size: 0.875rem;
++      color: var(--text-muted);
++      line-height: 1.5;
++    }
++    .trust-stats {
++      display: flex;
++      justify-content: center;
++      gap: 5rem;
++      margin-top: 4rem;
++      padding-top: 3rem;
++      border-top: 1px solid var(--border);
++    }
++    .stat { text-align: center; }
++    .stat-num {
++      display: block;
++      font-family: 'Bricolage Grotesque', sans-serif;
++      font-size: clamp(2.5rem, 5vw, 3.5rem);
++      font-weight: 800;
++      color: var(--accent);
++      line-height: 1;
++    }
++    .stat-label {
++      display: block;
++      font-size: 0.875rem;
++      color: var(--text-muted);
++      margin-top: 0.4rem;
++    }
++    @media (max-width: 900px) {
++      .trust-grid { grid-template-columns: repeat(2, 1fr); }
++      .trust-stats { gap: 2.5rem; }
++    }
++    @media (max-width: 480px) {
++      .trust-grid { grid-template-columns: 1fr; }
++      .trust-stats { flex-direction: column; gap: 1.5rem; }
++    }
++
++    /* ── Contact ── */
++    #contact {
++      padding-block: var(--section-gap);
++      background: var(--surface);
++      position: relative;
++      overflow: hidden;
++    }
++    .contact-blob {
++      position: absolute;
++      bottom: -200px; left: -150px;
++      width: 500px; height: 500px;
++      background: radial-gradient(circle, rgba(255,107,107,0.12) 0%, transparent 70%);
++      pointer-events: none;
++    }
++    .contact-sub {
++      color: var(--text-muted);
++      font-size: 1.05rem;
++      margin-bottom: 3rem;
++      max-width: 50ch;
++    }
++    .contact-inner {
++      display: grid;
++      grid-template-columns: 1fr 300px;
++      gap: 4rem;
++      align-items: start;
++    }
++    .contact-form {
++      display: flex;
++      flex-direction: column;
++      gap: 1.25rem;
++    }
++    .form-group {
++      display: flex;
++      flex-direction: column;
++      gap: 0.4rem;
++    }
++    .form-group label {
++      font-size: 0.875rem;
++      font-weight: 600;
++      color: var(--text);
++    }
++    .form-group input,
++    .form-group textarea {
++      padding: 0.85rem 1rem;
++      border: 1.5px solid var(--border);
++      border-radius: var(--radius-sm);
++      font: inherit;
++      font-size: 1rem;
++      background: var(--bg);
++      color: var(--text);
++      transition: border-color var(--transition), box-shadow var(--transition);
++      outline: none;
++      min-height: 44px;
++    }
++    .form-group input:focus,
++    .form-group textarea:focus {
++      border-color: var(--accent);
++      box-shadow: 0 0 0 3px rgba(255,107,107,0.1);
++    }
++    .form-group textarea { resize: vertical; min-height: 120px; }
++    .form-submit { align-self: flex-start; }
++    .form-success,
++    .form-error {
++      padding: 0.85rem 1rem;
++      border-radius: var(--radius-sm);
++      font-weight: 500;
++      font-size: 0.9rem;
++    }
++    .form-success { background: rgba(52,211,153,0.1); color: #059669; }
++    .form-error   { background: rgba(255,107,107,0.1); color: #dc2626; }
++
++    .contact-alt { padding-top: 1rem; }
++    .contact-alt-title {
++      font-weight: 600;
++      margin-bottom: 1rem;
++      color: var(--text-muted);
++    }
++    .contact-tg { width: 100%; justify-content: center; }
++    .contact-promise {
++      margin-top: 1rem;
++      font-size: 0.8rem;
++      color: var(--text-muted);
++      text-align: center;
++    }
++
++    @media (max-width: 768px) {
++      .contact-inner { grid-template-columns: 1fr; gap: 2rem; }
++      .form-submit { width: 100%; justify-content: center; }
++    }
++
++    /* ── Footer ── */
++    .footer {
++      padding-block: 2rem;
++      border-top: 1px solid var(--border);
++    }
++    .footer-inner {
++      display: flex;
++      align-items: center;
++      justify-content: space-between;
++      gap: 1rem;
++      flex-wrap: wrap;
++    }
++    .footer-logo {
++      font-family: 'Bricolage Grotesque', sans-serif;
++      font-size: 1.2rem;
++      font-weight: 800;
++    }
++    .footer-copy {
++      font-size: 0.875rem;
++      color: var(--text-muted);
++    }
++    .footer-links a {
++      font-size: 0.875rem;
++      color: var(--text-muted);
++      transition: color var(--transition);
++    }
++    .footer-links a:hover { color: var(--accent); }
++
++    /* ── Back to top ── */
++    .back-to-top {
++      position: fixed;
++      bottom: 2rem; right: 1.5rem;
++      width: 44px; height: 44px;
++      border-radius: 50%;
++      background: var(--accent);
++      color: #fff;
++      font-size: 1.2rem;
++      display: flex;
++      align-items: center;
++      justify-content: center;
++      box-shadow: 0 4px 20px var(--shadow);
++      z-index: 50;
++      transition: var(--transition);
++      opacity: 0;
++      pointer-events: none;
++    }
++    .back-to-top.visible {
++      opacity: 1;
++      pointer-events: auto;
++    }
++    .back-to-top:hover { transform: translateY(-3px); }
++
++    /* ── Mobile sticky CTA ── */
++    .mobile-cta {
++      display: none;
++      position: fixed;
++      bottom: 0; left: 0; right: 0;
++      background: var(--accent);
++      color: #fff;
++      text-align: center;
++      padding: 1rem;
++      font-weight: 700;
++      font-size: 1rem;
++      z-index: 90;
++      box-shadow: 0 -4px 20px var(--shadow);
++      transform: translateY(100%);
++      transition: transform 0.4s ease;
++    }
++    .mobile-cta.show { transform: translateY(0); }
++
++    @media (max-width: 768px) {
++      .mobile-cta { display: block; }
++      .back-to-top { bottom: 5rem; }
++      footer { padding-bottom: 5rem; }
++    }
++    @media (min-width: 769px) {
++      .mobile-cta { display: none !important; }
++    }
+   </style>
+ </head>
+ <body>
+@@ -459,8 +938,270 @@
+     </div>
+   </div>
+ </section>
++
++<section id="services">
++  <div class="container">
++    <p class="section-label reveal">Что я делаю</p>
++    <h2 class="section-title reveal reveal-delay-1">Услуги</h2>
++    <div class="services-grid">
++
++      <article class="service-card reveal reveal-delay-1">
++        <div class="service-icon" aria-hidden="true">🌐</div>
++        <h3 class="service-title">Сайты и лендинги</h3>
++        <p class="service-for">Для экспертов и малого бизнеса</p>
++        <ul class="service-list">
++          <li>Дизайн + разработка под ключ</li>
++          <li>Адаптив для мобильных</li>
++          <li>Форма заявки и аналитика</li>
++          <li>Сдача за 7–14 дней</li>
++        </ul>
++        <div class="service-price">от 5 000 ₽</div>
++        <a href="#contact" class="btn btn-outline service-cta">Узнать стоимость</a>
++      </article>
++
++      <article class="service-card service-card--featured reveal reveal-delay-2">
++        <div class="service-badge">Популярно</div>
++        <div class="service-icon" aria-hidden="true">💳</div>
++        <h3 class="service-title">Цифровая визитка</h3>
++        <p class="service-for">Для фрилансеров и экспертов</p>
++        <ul class="service-list">
++          <li>Ссылка вместо бумажной карточки</li>
++          <li>Фото, соцсети, портфолио</li>
++          <li>Уникальный стиль под вас</li>
++          <li>Готово за 2–5 дней</li>
++        </ul>
++        <div class="service-price">от 3 000 ₽</div>
++        <a href="#contact" class="btn btn-primary service-cta">Узнать стоимость</a>
++      </article>
++
++      <article class="service-card reveal reveal-delay-3">
++        <div class="service-icon" aria-hidden="true">🤖</div>
++        <h3 class="service-title">AI-агент</h3>
++        <p class="service-for">Для бизнеса, который устал от рутины</p>
++        <ul class="service-list">
++          <li>Ответы клиентам 24/7</li>
++          <li>Квалификация заявок</li>
++          <li>Интеграция в Telegram/WhatsApp</li>
++          <li>Внедрение от 10 дней</li>
++        </ul>
++        <div class="service-price">от 15 000 ₽</div>
++        <a href="#contact" class="btn btn-outline service-cta">Узнать стоимость</a>
++      </article>
++
++    </div>
++  </div>
++</section>
++
++<section id="works">
++  <div class="container">
++    <p class="section-label reveal">Мои работы</p>
++    <h2 class="section-title reveal reveal-delay-1">Что уже создано</h2>
++    <div class="works-grid">
++
++      <article class="work-card reveal reveal-delay-1">
++        <div class="work-preview work-preview--purple" aria-hidden="true">
++          <span class="work-preview-text">Калькулятор<br>призвания</span>
++        </div>
++        <div class="work-info">
++          <div class="work-tags">
++            <span class="tag tag--purple">Демо-проект</span>
++            <span class="tag">Лендинг</span>
++            <span class="tag">CSS-анимации</span>
++          </div>
++          <h3 class="work-title">Калькулятор призвания</h3>
++          <p class="work-desc">Лендинг для психологического теста. Адаптивная вёрстка, анимации на CSS, форма сбора контактов.</p>
++        </div>
++      </article>
++
++      <article class="work-card reveal reveal-delay-2">
++        <div class="work-preview work-preview--coral" aria-hidden="true">
++          <span class="work-preview-text">Поздрав-<br>лятор</span>
++        </div>
++        <div class="work-info">
++          <div class="work-tags">
++            <span class="tag tag--green">Концепт</span>
++            <span class="tag">UX</span>
++            <span class="tag">MVP-план</span>
++          </div>
++          <h3 class="work-title">Поздравлятор</h3>
++          <p class="work-desc">Концепт сервиса для видеооткрыток. UX-проектирование, прототип интерфейса, план MVP.</p>
++        </div>
++      </article>
++
++    </div>
++    <p class="works-disclaimer reveal">
++      ✨ Это мои учебные работы — я только начинаю путь.
++      Именно поэтому каждому проекту уделяю максимум внимания.
++    </p>
++  </div>
++</section>
++
++<section id="process">
++  <div class="container">
++    <p class="section-label reveal">Прозрачность</p>
++    <h2 class="section-title reveal reveal-delay-1">Как мы будем работать</h2>
++    <div class="process-steps">
++
++      <div class="process-step reveal reveal-delay-1">
++        <div class="step-num" aria-hidden="true">01</div>
++        <div class="step-body">
++          <h3 class="step-title">Звонок — 20 минут</h3>
++          <p class="step-desc">Разбираем задачу, отвечаю на вопросы о процессе и стоимости</p>
++          <p class="step-result">→ Вы понимаете, что и как будет сделано</p>
++        </div>
++      </div>
++
++      <div class="process-step reveal reveal-delay-2">
++        <div class="step-num" aria-hidden="true">02</div>
++        <div class="step-body">
++          <h3 class="step-title">ТЗ и договор — 1–2 дня</h3>
++          <p class="step-desc">Фиксируем требования, дизайн и функционал письменно</p>
++          <p class="step-result">→ Документ, который защищает нас обоих</p>
++        </div>
++      </div>
++
++      <div class="process-step reveal reveal-delay-3">
++        <div class="step-num" aria-hidden="true">03</div>
++        <div class="step-body">
++          <h3 class="step-title">Разработка — 7–14 дней</h3>
++          <p class="step-desc">Еженедельные апдейты, вы видите прогресс на каждом этапе</p>
++          <p class="step-result">→ Никаких сюрпризов на финале</p>
++        </div>
++      </div>
++
++      <div class="process-step reveal reveal-delay-3">
++        <div class="step-num" aria-hidden="true">04</div>
++        <div class="step-body">
++          <h3 class="step-title">Сдача и поддержка</h3>
++          <p class="step-desc">Обучаю пользоваться результатом, месяц бесплатных правок</p>
++          <p class="step-result">→ Вы не остаётесь одни с готовым продуктом</p>
++        </div>
++      </div>
++
++    </div>
++  </div>
++</section>
++
++<section id="trust">
++  <div class="container">
++    <p class="section-label reveal">Спокойствие</p>
++    <h2 class="section-title reveal reveal-delay-1">Работаем спокойно</h2>
++    <div class="trust-grid">
++      <div class="trust-card reveal reveal-delay-1">
++        <span class="trust-icon" aria-hidden="true">📋</span>
++        <h3 class="trust-title">Договор</h3>
++        <p class="trust-desc">На каждый проект — письменное соглашение с зафиксированными сроками и стоимостью</p>
++      </div>
++      <div class="trust-card reveal reveal-delay-2">
++        <span class="trust-icon" aria-hidden="true">💳</span>
++        <h3 class="trust-title">Поэтапная оплата</h3>
++        <p class="trust-desc">Аванс только после утверждения ТЗ. Финальная оплата — после сдачи</p>
++      </div>
++      <div class="trust-card reveal reveal-delay-3">
++        <span class="trust-icon" aria-hidden="true">✏️</span>
++        <h3 class="trust-title">Правки включены</h3>
++        <p class="trust-desc">Месяц бесплатных правок после сдачи — не «за отдельную плату»</p>
++      </div>
++      <div class="trust-card reveal reveal-delay-3">
++        <span class="trust-icon" aria-hidden="true">🎓</span>
++        <h3 class="trust-title">Обучение</h3>
++        <p class="trust-desc">Покажу как пользоваться результатом и отвечу на вопросы — не оставлю одну</p>
++      </div>
++    </div>
++    <div class="trust-stats">
++      <div class="stat reveal reveal-delay-1">
++        <span class="stat-num">2</span>
++        <span class="stat-label">проекта создано</span>
++      </div>
++      <div class="stat reveal reveal-delay-2">
++        <span class="stat-num">100%</span>
++        <span class="stat-label">сдано в срок</span>
++      </div>
++      <div class="stat reveal reveal-delay-3">
++        <span class="stat-num">~1 ч</span>
++        <span class="stat-label">время ответа</span>
++      </div>
++    </div>
++  </div>
++</section>
++
++    <section id="contact">
++      <div class="contact-blob" aria-hidden="true"></div>
++      <div class="container">
++        <p class="section-label reveal">Давайте начнём</p>
++        <h2 class="section-title reveal reveal-delay-1">
++          Есть задача? Расскажите —<br>разберёмся вместе
++        </h2>
++        <p class="contact-sub reveal reveal-delay-2">
++          Без технического жаргона. Первая консультация бесплатно.
++        </p>
++        <div class="contact-inner">
++          <form class="contact-form reveal reveal-delay-2"
++                action="https://formspree.io/f/ЗАМЕНИ_НА_СВОЙ_ID"
++                method="POST">
++            <div class="form-group">
++              <label for="name">Ваше имя</label>
++              <input type="text" id="name" name="name" required
++                     placeholder="Как вас зовут?" autocomplete="name" />
++            </div>
++            <div class="form-group">
++              <label for="contact-field">Telegram или email</label>
++              <input type="text" id="contact-field" name="contact" required
++                     placeholder="@username или name@mail.ru" />
++            </div>
++            <div class="form-group">
++              <label for="message">Что нужно сделать?</label>
++              <textarea id="message" name="message" rows="4" required
++                        placeholder="Коротко опишите задачу — разберёмся вместе"></textarea>
++            </div>
++            <button type="submit" class="btn btn-primary form-submit">
++              Отправить заявку →
++            </button>
++            <div class="form-success" aria-live="polite" hidden>
++              Спасибо! Отвечу в течение часа 👋
++            </div>
++            <div class="form-error" aria-live="polite" hidden>
++              Что-то пошло не так — напишите напрямую в Telegram
++            </div>
++          </form>
++          <div class="contact-alt reveal reveal-delay-3">
++            <p class="contact-alt-title">Или напишите напрямую:</p>
++            <a href="https://t.me/elena_morozova_5555"
++               class="btn btn-outline contact-tg"
++               target="_blank" rel="noopener noreferrer">
++              ✈️ Написать в Telegram
++            </a>
++            <p class="contact-promise">Отвечаю в рабочие дни в течение часа</p>
++          </div>
++        </div>
++      </div>
++    </section>
++
+   </main>
+ 
++  <footer class="footer">
++    <div class="container footer-inner">
++      <a href="#hero" class="footer-logo">Алё<span class="accent">...</span>на!</a>
++      <p class="footer-copy">
++        © 2026 Алёна · Сделано с <span aria-label="любовью">♥</span> и кодом
++      </p>
++      <div class="footer-links">
++        <a href="https://t.me/elena_morozova_5555"
++           target="_blank" rel="noopener noreferrer"
++           aria-label="Telegram">✈️ Telegram</a>
++      </div>
++    </div>
++  </footer>
++
++  <button class="back-to-top" aria-label="Вернуться наверх" hidden>↑</button>
++
++  <a href="https://t.me/elena_morozova_5555"
++     class="mobile-cta"
++     target="_blank" rel="noopener noreferrer"
++     aria-label="Написать Алёне в Telegram">
++    ✈️ Написать Алёне
++  </a>
++
+   <script>
+     // ── Nav: scrolled state ──
+     const navWrapper = document.querySelector('.nav-wrapper');
+@@ -501,6 +1242,54 @@
+       entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+     }, { threshold: 0.1 });
+     document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
++
++    // ── Back to top ──
++    const backBtn = document.querySelector('.back-to-top');
++    backBtn.hidden = false;
++    window.addEventListener('scroll', () => {
++      backBtn.classList.toggle('visible', window.scrollY > 400);
++    }, { passive: true });
++    backBtn.addEventListener('click', () => {
++      window.scrollTo({ top: 0, behavior: 'smooth' });
++    });
++
++    // ── Mobile sticky CTA ──
++    const mobileCta = document.querySelector('.mobile-cta');
++    window.addEventListener('scroll', () => {
++      mobileCta.classList.toggle('show', window.scrollY > 300);
++    }, { passive: true });
++
++    // ── Contact form ──
++    const contactForm = document.querySelector('.contact-form');
++    if (contactForm) {
++      contactForm.addEventListener('submit', async (e) => {
++        e.preventDefault();
++        const successEl = contactForm.querySelector('.form-success');
++        const errorEl   = contactForm.querySelector('.form-error');
++        const submitBtn = contactForm.querySelector('.form-submit');
++        submitBtn.disabled = true;
++        submitBtn.textContent = 'Отправляю...';
++        try {
++          const res = await fetch(contactForm.action, {
++            method: 'POST',
++            body: new FormData(contactForm),
++            headers: { 'Accept': 'application/json' }
++          });
++          if (res.ok) {
++            successEl.hidden = false;
++            errorEl.hidden   = true;
++            contactForm.reset();
++          } else {
++            throw new Error('Network response was not ok');
++          }
++        } catch {
++          errorEl.hidden   = false;
++          successEl.hidden = true;
++          submitBtn.disabled = false;
++          submitBtn.textContent = 'Отправить заявку →';
++        }
++      });
++    }
+   </script>
+ </body>
+ </html>

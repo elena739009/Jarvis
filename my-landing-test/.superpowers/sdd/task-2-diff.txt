@@ -1,0 +1,173 @@
+diff --git a/my-landing-test/index.html b/my-landing-test/index.html
+index 19ec6ca..e87ca83 100644
+--- a/my-landing-test/index.html
++++ b/my-landing-test/index.html
+@@ -109,10 +109,96 @@
+       background: var(--accent);
+       color: #fff;
+       transform: translateY(-2px);
+     }
+ 
++    /* ── Навигация ── */
++    .nav-wrapper {
++      position: fixed;
++      top: 0; left: 0; right: 0;
++      z-index: 100;
++      transition: background var(--transition), box-shadow var(--transition);
++    }
++    .nav-wrapper.scrolled {
++      background: rgba(255, 248, 243, 0.92);
++      backdrop-filter: blur(12px);
++      box-shadow: 0 1px 0 var(--border);
++    }
++    .nav {
++      display: flex;
++      align-items: center;
++      gap: 2rem;
++      padding-block: 1.1rem;
++    }
++    .nav-logo {
++      font-family: 'Bricolage Grotesque', sans-serif;
++      font-size: 1.4rem;
++      font-weight: 800;
++      margin-right: auto;
++    }
++    .nav-links {
++      display: flex;
++      gap: 2rem;
++    }
++    .nav-link {
++      font-weight: 500;
++      color: var(--text-muted);
++      transition: color var(--transition);
++      position: relative;
++    }
++    .nav-link::after {
++      content: '';
++      position: absolute;
++      bottom: -3px; left: 0;
++      width: 0; height: 2px;
++      background: var(--accent);
++      transition: width var(--transition);
++    }
++    .nav-link:hover,
++    .nav-link.active { color: var(--text); }
++    .nav-link:hover::after,
++    .nav-link.active::after { width: 100%; }
++
++    .nav-burger {
++      display: none;
++      flex-direction: column;
++      gap: 5px;
++      padding: 8px;
++      min-width: 44px; min-height: 44px;
++      justify-content: center;
++    }
++    .nav-burger span {
++      display: block;
++      width: 22px; height: 2px;
++      background: var(--text);
++      border-radius: 2px;
++      transition: var(--transition);
++    }
++    .nav-wrapper.open .nav-burger span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
++    .nav-wrapper.open .nav-burger span:nth-child(2) { opacity: 0; }
++    .nav-wrapper.open .nav-burger span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
++
++    body { padding-top: 72px; }
++
++    @media (max-width: 768px) {
++      .nav-burger { display: flex; }
++      .nav-cta { display: none; }
++      .nav-links {
++        display: none;
++        position: absolute;
++        top: 100%; left: 0; right: 0;
++        flex-direction: column;
++        background: var(--bg);
++        padding: 1.5rem;
++        border-top: 1px solid var(--border);
++        gap: 1rem;
++        box-shadow: 0 8px 30px rgba(0,0,0,0.08);
++      }
++      .nav-wrapper.open .nav-links { display: flex; }
++      .nav-link { font-size: 1.1rem; }
++    }
++
+     /* ── Пульс на hero CTA ── */
+     @keyframes pulse-glow {
+       0%, 100% { box-shadow: 0 4px 20px var(--shadow); }
+       50%       { box-shadow: 0 4px 40px rgba(255,107,107,0.45); }
+     }
+@@ -144,13 +230,71 @@
+       .reveal { opacity: 1; transform: none; }
+     }
+   </style>
+ </head>
+ <body>
++  <header class="nav-wrapper">
++    <nav class="nav container">
++      <a href="#hero" class="nav-logo">Алё<span class="accent">...</span>на!</a>
++      <button class="nav-burger" aria-label="Открыть меню" aria-expanded="false">
++        <span></span><span></span><span></span>
++      </button>
++      <ul class="nav-links" role="list">
++        <li><a href="#services" class="nav-link">Услуги</a></li>
++        <li><a href="#works"    class="nav-link">Работы</a></li>
++        <li><a href="#process"  class="nav-link">Процесс</a></li>
++        <li><a href="#contact"  class="nav-link">Контакт</a></li>
++      </ul>
++      <a href="#contact" class="btn btn-primary nav-cta">Написать →</a>
++    </nav>
++  </header>
++
+   <!-- Контент будет добавлен в следующих задачах -->
+   <main>
+     <section id="hero" style="min-height:100vh;display:flex;align-items:center;justify-content:center;">
+       <h1 style="font-family:'Bricolage Grotesque',sans-serif;">Алё...на! 👋 Скелет готов</h1>
+     </section>
+   </main>
++
++  <script>
++    // ── Nav: scrolled state ──
++    const navWrapper = document.querySelector('.nav-wrapper');
++    const navLinks   = document.querySelectorAll('.nav-link');
++    const sections   = document.querySelectorAll('main section[id]');
++
++    window.addEventListener('scroll', () => {
++      navWrapper.classList.toggle('scrolled', window.scrollY > 20);
++    }, { passive: true });
++
++    // ── Nav: гамбургер ──
++    const burger = document.querySelector('.nav-burger');
++    burger.addEventListener('click', () => {
++      const isOpen = navWrapper.classList.toggle('open');
++      burger.setAttribute('aria-expanded', isOpen);
++    });
++    document.querySelectorAll('.nav-link').forEach(link => {
++      link.addEventListener('click', () => {
++        navWrapper.classList.remove('open');
++        burger.setAttribute('aria-expanded', 'false');
++      });
++    });
++
++    // ── Nav: активный пункт по скроллу ──
++    const observer = new IntersectionObserver((entries) => {
++      entries.forEach(entry => {
++        if (entry.isIntersecting) {
++          navLinks.forEach(l => l.classList.remove('active'));
++          const active = document.querySelector(`.nav-link[href="#${entry.target.id}"]`);
++          if (active) active.classList.add('active');
++        }
++      });
++    }, { rootMargin: '-40% 0px -55% 0px' });
++    sections.forEach(s => observer.observe(s));
++
++    // ── Reveal при скролле ──
++    const revealObserver = new IntersectionObserver((entries) => {
++      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
++    }, { threshold: 0.1 });
++    document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
++  </script>
+ </body>
+ </html>

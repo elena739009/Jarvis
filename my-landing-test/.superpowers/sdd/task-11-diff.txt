@@ -1,0 +1,45 @@
+diff --git a/my-landing-test/index.html b/my-landing-test/index.html
+index 365f1c6..e1a7a61 100644
+--- a/my-landing-test/index.html
++++ b/my-landing-test/index.html
+@@ -840,9 +840,40 @@
+     @media (min-width: 769px) {
+       .mobile-cta { display: none !important; }
+     }
++
++    /* ── Focus visible (навигация с клавиатуры) ── */
++    :focus-visible {
++      outline: 2px solid var(--accent);
++      outline-offset: 3px;
++      border-radius: 4px;
++    }
++
++    /* ── Скролл-полоса прогресса ── */
++    @supports (animation-timeline: scroll()) {
++      .scroll-progress {
++        position: fixed;
++        top: 0; left: 0;
++        width: 0; height: 3px;
++        background: var(--accent);
++        z-index: 200;
++        animation: progress-bar linear;
++        animation-timeline: scroll();
++      }
++      @keyframes progress-bar {
++        from { width: 0; }
++        to   { width: 100%; }
++      }
++    }
++
++    /* ── Выделение текста ── */
++    ::selection {
++      background: rgba(255, 107, 107, 0.2);
++      color: var(--text);
++    }
+   </style>
+ </head>
+ <body>
++  <div class="scroll-progress" aria-hidden="true"></div>
+   <header class="nav-wrapper">
+     <nav class="nav container">
+       <a href="#hero" class="nav-logo">Алё<span class="accent">...</span>на!</a>

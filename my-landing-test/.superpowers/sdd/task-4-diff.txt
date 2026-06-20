@@ -1,0 +1,78 @@
+diff --git a/my-landing-test/index.html b/my-landing-test/index.html
+index 2bc99f1..8321f12 100644
+--- a/my-landing-test/index.html
++++ b/my-landing-test/index.html
+@@ -322,6 +322,45 @@
+       .hero-avatar { order: -1; }
+       .avatar-svg { max-width: 240px; }
+     }
++
++    /* ── Problem ── */
++    #problem {
++      padding-block: var(--section-gap);
++    }
++    .problem-grid {
++      display: grid;
++      grid-template-columns: repeat(3, 1fr);
++      gap: 1.5rem;
++      margin-top: 3rem;
++    }
++    .problem-card {
++      background: var(--surface);
++      border-radius: var(--radius);
++      padding: 2rem;
++      border-left: 4px solid var(--accent);
++      box-shadow: 0 4px 20px rgba(0,0,0,0.05);
++      transition: transform var(--transition), box-shadow var(--transition);
++    }
++    .problem-card:nth-child(2) { border-color: var(--accent-2); }
++    .problem-card:nth-child(3) { border-color: var(--accent-3); }
++    .problem-card:hover {
++      transform: translateY(-4px);
++      box-shadow: 0 12px 40px rgba(0,0,0,0.09);
++    }
++    .problem-icon {
++      display: block;
++      font-size: 2rem;
++      margin-bottom: 1rem;
++    }
++    .problem-card p {
++      font-size: 1rem;
++      color: var(--text);
++      line-height: 1.6;
++      font-style: italic;
++    }
++    @media (max-width: 768px) {
++      .problem-grid { grid-template-columns: 1fr; }
++    }
+   </style>
+ </head>
+ <body>
+@@ -399,6 +438,27 @@
+     <span>↓</span>
+   </a>
+ </section>
++
++<section id="problem">
++  <div class="container">
++    <p class="section-label reveal">Вы не одиноки</p>
++    <h2 class="section-title reveal reveal-delay-1">Узнаёте себя?</h2>
++    <div class="problem-grid">
++      <div class="problem-card reveal reveal-delay-1">
++        <span class="problem-icon" aria-hidden="true">🕐</span>
++        <p>«Хочу сайт — но объяснять технарям что нужно это как говорить на другом языке»</p>
++      </div>
++      <div class="problem-card reveal reveal-delay-2">
++        <span class="problem-icon" aria-hidden="true">💸</span>
++        <p>«Заплатила дизайнеру — получила что-то совсем не то, что хотела»</p>
++      </div>
++      <div class="problem-card reveal reveal-delay-3">
++        <span class="problem-icon" aria-hidden="true">🤖</span>
++        <p>«Слышу про AI везде, но не понимаю, как это поможет именно моему делу»</p>
++      </div>
++    </div>
++  </div>
++</section>
+   </main>
+ 
+   <script>

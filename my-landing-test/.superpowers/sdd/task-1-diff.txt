@@ -1,0 +1,162 @@
+diff --git a/my-landing-test/index.html b/my-landing-test/index.html
+new file mode 100644
+index 0000000..19ec6ca
+--- /dev/null
++++ b/my-landing-test/index.html
+@@ -0,0 +1,156 @@
++<!DOCTYPE html>
++<html lang="ru">
++<head>
++  <meta charset="UTF-8" />
++  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
++  <meta name="description" content="Алёна — создаю сайты, визитки и AI-агентов под ключ для экспертов и малого бизнеса. Первая консультация бесплатно." />
++  <meta property="og:title" content="Алё...на! — Сайты, визитки и AI-агенты" />
++  <meta property="og:description" content="Создаю цифровые продукты с душой. Первая консультация бесплатно." />
++  <meta property="og:type" content="website" />
++  <title>Алё...на! — Сайты, визитки и AI-агенты</title>
++  <link rel="preconnect" href="https://fonts.googleapis.com" />
++  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
++  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,700;12..96,800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
++  <style>
++    /* ── CSS Custom Properties ── */
++    :root {
++      --bg:           #FFF8F3;
++      --surface:      #FFFFFF;
++      --text:         #1A1A2E;
++      --text-muted:   #6B7280;
++      --accent:       #FF6B6B;
++      --accent-2:     #A78BFA;
++      --accent-3:     #34D399;
++      --border:       #F0E6DF;
++      --shadow:       rgba(255, 107, 107, 0.15);
++      --radius:       16px;
++      --radius-sm:    8px;
++      --transition:   0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
++
++      --font-hero:    clamp(2.5rem, 6vw, 4.5rem);
++      --font-h2:      clamp(1.8rem, 4vw, 2.8rem);
++      --font-h3:      clamp(1.1rem, 2vw, 1.4rem);
++      --font-body:    1rem;
++
++      --container:    1200px;
++      --section-gap:  clamp(5rem, 10vw, 9rem);
++    }
++
++    /* ── Reset ── */
++    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
++    html { scroll-behavior: smooth; }
++    body {
++      font-family: 'Inter', sans-serif;
++      font-size: var(--font-body);
++      line-height: 1.6;
++      color: var(--text);
++      background: var(--bg);
++      overflow-x: hidden;
++    }
++    img, svg { display: block; max-width: 100%; }
++    a { color: inherit; text-decoration: none; }
++    button { cursor: pointer; border: none; background: none; font: inherit; }
++    ul { list-style: none; }
++
++    /* ── Container ── */
++    .container {
++      width: min(var(--container), 100% - 2rem);
++      margin-inline: auto;
++    }
++
++    /* ── Утилиты ── */
++    .section-label {
++      font-size: 0.8rem;
++      font-weight: 600;
++      letter-spacing: 0.15em;
++      text-transform: uppercase;
++      color: var(--accent);
++      margin-bottom: 0.75rem;
++    }
++    .section-title {
++      font-family: 'Bricolage Grotesque', sans-serif;
++      font-size: var(--font-h2);
++      font-weight: 800;
++      line-height: 1.1;
++      color: var(--text);
++      margin-bottom: 1rem;
++    }
++    .accent { color: var(--accent); }
++    .accent-2 { color: var(--accent-2); }
++
++    /* ── Кнопки ── */
++    .btn {
++      display: inline-flex;
++      align-items: center;
++      gap: 0.5rem;
++      padding: 0.85rem 1.75rem;
++      border-radius: 50px;
++      font-weight: 600;
++      font-size: 1rem;
++      transition: var(--transition);
++      min-height: 44px;
++    }
++    .btn-primary {
++      background: var(--accent);
++      color: #fff;
++      box-shadow: 0 4px 20px var(--shadow);
++    }
++    .btn-primary:hover {
++      background: #ff5252;
++      transform: translateY(-2px);
++      box-shadow: 0 8px 30px var(--shadow);
++    }
++    .btn-outline {
++      border: 2px solid var(--accent);
++      color: var(--accent);
++      background: transparent;
++    }
++    .btn-outline:hover {
++      background: var(--accent);
++      color: #fff;
++      transform: translateY(-2px);
++    }
++
++    /* ── Пульс на hero CTA ── */
++    @keyframes pulse-glow {
++      0%, 100% { box-shadow: 0 4px 20px var(--shadow); }
++      50%       { box-shadow: 0 4px 40px rgba(255,107,107,0.45); }
++    }
++    .hero-btn { animation: pulse-glow 2.5s ease-in-out infinite; }
++    .hero-btn:hover { animation: none; }
++
++    /* ── Reveal-анимации ── */
++    .reveal {
++      opacity: 0;
++      transform: translateY(30px);
++      transition: opacity 0.6s ease, transform 0.6s ease;
++    }
++    .reveal.visible {
++      opacity: 1;
++      transform: translateY(0);
++    }
++    .reveal-delay-1 { transition-delay: 0.1s; }
++    .reveal-delay-2 { transition-delay: 0.2s; }
++    .reveal-delay-3 { transition-delay: 0.3s; }
++
++    /* ── Reduced motion ── */
++    @media (prefers-reduced-motion: reduce) {
++      *, *::before, *::after {
++        animation-duration: 0.01ms !important;
++        animation-iteration-count: 1 !important;
++        transition-duration: 0.01ms !important;
++      }
++      html { scroll-behavior: auto; }
++      .reveal { opacity: 1; transform: none; }
++    }
++  </style>
++</head>
++<body>
++  <!-- Контент будет добавлен в следующих задачах -->
++  <main>
++    <section id="hero" style="min-height:100vh;display:flex;align-items:center;justify-content:center;">
++      <h1 style="font-family:'Bricolage Grotesque',sans-serif;">Алё...на! 👋 Скелет готов</h1>
++    </section>
++  </main>
++</body>
++</html>
