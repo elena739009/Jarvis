@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
 """
-Поздравлятор — FastAPI backend (Этап 2).
+Поздравлятор — FastAPI backend (Этап 2–3).
 
 Эндпоинты:
-  POST /jobs          — принять фото + аудио + параметры, запустить рендер
-  GET  /jobs/{id}     — статус задачи и ссылка на видео
-  GET  /files/{name}  — скачать готовое видео
-  GET  /health        — проверка сервиса
+  GET  /               — веб-интерфейс (index.html)
+  POST /jobs           — принять фото + аудио + параметры, запустить рендер
+  GET  /jobs/{id}      — статус задачи и ссылка на видео
+  GET  /files/{name}   — скачать готовое видео
+  GET  /health         — проверка сервиса
   DELETE /jobs/cleanup — удалить просроченные задачи (ручной запуск)
 """
 import shutil
@@ -30,17 +31,20 @@ from .schemas import JobResponse, TextMode
 from .tasks import render_job
 
 # ── инициализация ──────────────────────────────────────────────────────────────
+STATIC_DIR = Path(__file__).parent.parent / "static"
+
 Base.metadata.create_all(bind=engine)
 Path(settings.uploads_dir).mkdir(parents=True, exist_ok=True)
 Path(settings.output_dir).mkdir(parents=True, exist_ok=True)
 
 app = FastAPI(
     title="Поздравлятор API",
-    version="0.2.0",
+    version="0.3.0",
     description="Сервис создания видео-поздравлений из фото + аудио",
 )
 
-app.mount("/files", StaticFiles(directory=settings.output_dir), name="files")
+app.mount("/files",  StaticFiles(directory=settings.output_dir), name="files")
+app.mount("/static", StaticFiles(directory=str(STATIC_DIR)),     name="static")
 
 # ── допустимые типы файлов ─────────────────────────────────────────────────────
 PHOTO_TYPES = {
@@ -80,6 +84,11 @@ def _job_to_response(job: Job, request: Request) -> JobResponse:
 
 
 # ── маршруты ──────────────────────────────────────────────────────────────────
+
+@app.get("/", include_in_schema=False)
+def index():
+    return FileResponse(str(STATIC_DIR / "index.html"))
+
 
 @app.post("/jobs", response_model=JobResponse, status_code=201,
           summary="Создать задачу рендеринга")

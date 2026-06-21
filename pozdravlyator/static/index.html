@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Поздравлятор — видео-поздравления из ваших фото</title>
+<style>
+  /* ── reset & base ─────────────────────────────────────────── */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg:       #0d0d1a;
+    --surface:  #161628;
+    --border:   #2a2a4a;
+    --accent:   #c084fc;
+    --accent2:  #f9a8d4;
+    --gold:     #fcd34d;
+    --text:     #e8e8f0;
+    --muted:    #8888aa;
+    --radius:   16px;
+    --shadow:   0 8px 32px rgba(0,0,0,.45);
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 24px 16px 48px;
+  }
+
+  /* ── header ──────────────────────────────────────────────── */
+  header {
+    text-align: center;
+    margin-bottom: 32px;
+  }
+  header .logo {
+    font-size: 2rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, #c084fc, #f9a8d4, #fcd34d);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  header p {
+    color: var(--muted);
+    font-size: .95rem;
+    margin-top: 6px;
+  }
+
+  /* ── card ────────────────────────────────────────────────── */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    width: 100%;
+    max-width: 560px;
+    padding: 28px 24px;
+  }
+
+  /* ── section label ───────────────────────────────────────── */
+  .label {
+    font-size: .8rem;
+    font-weight: 600;
+    color: var(--muted);
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .section { margin-bottom: 20px; }
+
+  /* ── drop zone ───────────────────────────────────────────── */
+  .drop-zone {
+    border: 2px dashed var(--border);
+    border-radius: 12px;
+    padding: 28px 16px;
+    text-align: center;
+    cursor: pointer;
+    transition: border-color .2s, background .2s;
+    position: relative;
+  }
+  .drop-zone:hover, .drop-zone.over {
+    border-color: var(--accent);
+    background: rgba(192,132,252,.06);
+  }
+  .drop-zone input[type=file] {
+    position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%;
+  }
+  .drop-zone .icon { font-size: 2rem; margin-bottom: 8px; }
+  .drop-zone .hint { color: var(--muted); font-size: .88rem; }
+  .drop-zone .hint strong { color: var(--accent); }
+
+  /* ── preview thumbnails ──────────────────────────────────── */
+  #photo-preview {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 12px;
+  }
+  #photo-preview .thumb {
+    width: 64px; height: 64px;
+    border-radius: 8px;
+    object-fit: cover;
+    border: 2px solid var(--border);
+    position: relative;
+  }
+  .thumb-wrap { position: relative; display: inline-block; }
+  .thumb-wrap .del {
+    position: absolute; top: -6px; right: -6px;
+    background: #ef4444; color: #fff;
+    border: none; border-radius: 50%;
+    width: 18px; height: 18px;
+    font-size: 11px; line-height: 18px; text-align: center;
+    cursor: pointer; display: flex; align-items: center; justify-content: center;
+  }
+  #photo-count { font-size: .82rem; color: var(--muted); margin-top: 6px; }
+
+  /* ── audio zone ──────────────────────────────────────────── */
+  #audio-name {
+    margin-top: 8px;
+    font-size: .88rem;
+    color: var(--accent2);
+    display: none;
+  }
+
+  /* ── text input ──────────────────────────────────────────── */
+  textarea {
+    width: 100%;
+    background: rgba(255,255,255,.04);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    color: var(--text);
+    font-size: .95rem;
+    padding: 12px 14px;
+    resize: vertical;
+    min-height: 72px;
+    font-family: inherit;
+    transition: border-color .2s;
+  }
+  textarea:focus { outline: none; border-color: var(--accent); }
+  #char-count { font-size: .78rem; color: var(--muted); text-align: right; margin-top: 4px; }
+
+  /* ── mode selector ───────────────────────────────────────── */
+  .mode-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  .mode-btn {
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px;
+    cursor: pointer;
+    background: transparent;
+    color: var(--text);
+    text-align: left;
+    transition: border-color .2s, background .2s;
+  }
+  .mode-btn .mode-icon { font-size: 1.4rem; display: block; margin-bottom: 4px; }
+  .mode-btn .mode-title { font-size: .9rem; font-weight: 600; display: block; }
+  .mode-btn .mode-desc  { font-size: .78rem; color: var(--muted); margin-top: 2px; display: block; }
+  .mode-btn.active {
+    border-color: var(--accent);
+    background: rgba(192,132,252,.1);
+  }
+
+  /* ── watermark toggle ────────────────────────────────────── */
+  .toggle-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    user-select: none;
+  }
+  .toggle {
+    width: 42px; height: 24px;
+    border-radius: 12px;
+    background: var(--border);
+    position: relative;
+    transition: background .2s;
+    flex-shrink: 0;
+  }
+  .toggle::after {
+    content: '';
+    position: absolute;
+    width: 18px; height: 18px;
+    border-radius: 50%;
+    background: #fff;
+    top: 3px; left: 3px;
+    transition: transform .2s;
+  }
+  .toggle.on { background: var(--accent); }
+  .toggle.on::after { transform: translateX(18px); }
+  .toggle-label { font-size: .9rem; }
+  .toggle-sub { font-size: .78rem; color: var(--muted); }
+
+  /* ── submit button ───────────────────────────────────────── */
+  #submit-btn {
+    width: 100%;
+    padding: 16px;
+    border: none;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #c084fc, #f9a8d4);
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    margin-top: 8px;
+    transition: opacity .2s, transform .1s;
+    letter-spacing: .03em;
+  }
+  #submit-btn:hover:not(:disabled) { opacity: .9; }
+  #submit-btn:active:not(:disabled) { transform: scale(.98); }
+  #submit-btn:disabled { opacity: .5; cursor: not-allowed; }
+
+  /* ── error box ───────────────────────────────────────────── */
+  #error-box {
+    background: rgba(239,68,68,.12);
+    border: 1px solid rgba(239,68,68,.4);
+    border-radius: 10px;
+    padding: 12px 14px;
+    color: #fca5a5;
+    font-size: .88rem;
+    margin-top: 14px;
+    display: none;
+  }
+
+  /* ══════════════════════════════════════════════════════════ */
+  /* ── LOADING SCREEN ──────────────────────────────────────── */
+  /* ══════════════════════════════════════════════════════════ */
+  #screen-loading {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    width: 100%;
+    max-width: 480px;
+  }
+
+  .spinner-wrap {
+    position: relative;
+    width: 96px; height: 96px;
+    margin-bottom: 28px;
+  }
+  .spinner-ring {
+    position: absolute; inset: 0;
+    border-radius: 50%;
+    border: 4px solid transparent;
+    animation: spin 1.4s linear infinite;
+  }
+  .spinner-ring:nth-child(1) {
+    border-top-color: #c084fc;
+    animation-duration: 1.4s;
+  }
+  .spinner-ring:nth-child(2) {
+    inset: 10px;
+    border-right-color: #f9a8d4;
+    animation-duration: 1.0s;
+    animation-direction: reverse;
+  }
+  .spinner-ring:nth-child(3) {
+    inset: 20px;
+    border-bottom-color: #fcd34d;
+    animation-duration: 0.7s;
+  }
+  .spinner-icon {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 2rem;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  #loading-title {
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+    background: linear-gradient(135deg, #c084fc, #f9a8d4);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  }
+  #loading-status {
+    color: var(--muted);
+    font-size: .92rem;
+    min-height: 1.4em;
+    margin-bottom: 28px;
+  }
+
+  .progress-track {
+    width: 100%;
+    max-width: 320px;
+    height: 6px;
+    background: var(--border);
+    border-radius: 3px;
+    overflow: hidden;
+    margin-bottom: 10px;
+  }
+  .progress-bar {
+    height: 100%;
+    border-radius: 3px;
+    background: linear-gradient(90deg, #c084fc, #f9a8d4, #fcd34d);
+    background-size: 200% 100%;
+    animation: shimmer 2s linear infinite;
+    transition: width .6s ease;
+    width: 15%;
+  }
+  @keyframes shimmer { to { background-position: -200% center; } }
+
+  #back-btn {
+    margin-top: 24px;
+    background: none;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--muted);
+    font-size: .85rem;
+    padding: 8px 16px;
+    cursor: pointer;
+  }
+  #back-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* ══════════════════════════════════════════════════════════ */
+  /* ── RESULT SCREEN ───────────────────────────────────────── */
+  /* ══════════════════════════════════════════════════════════ */
+  #screen-result {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    width: 100%;
+    max-width: 600px;
+  }
+
+  #result-title {
+    font-size: 1.6rem;
+    font-weight: 700;
+    margin-bottom: 6px;
+    background: linear-gradient(135deg, #c084fc, #f9a8d4, #fcd34d);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  }
+  #result-subtitle { color: var(--muted); font-size: .9rem; margin-bottom: 20px; }
+
+  video {
+    width: 100%;
+    max-width: 560px;
+    border-radius: 14px;
+    border: 1px solid var(--border);
+    background: #000;
+    display: block;
+    margin-bottom: 16px;
+  }
+
+  .result-btns {
+    display: flex;
+    gap: 12px;
+    width: 100%;
+    max-width: 560px;
+  }
+  .result-btns a, .result-btns button {
+    flex: 1;
+    padding: 14px;
+    border-radius: 12px;
+    font-size: .95rem;
+    font-weight: 600;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    border: none;
+    transition: opacity .2s;
+  }
+  .result-btns a { background: linear-gradient(135deg, #c084fc, #f9a8d4); color: #fff; }
+  .result-btns button { background: var(--surface); border: 1px solid var(--border); color: var(--text); }
+  .result-btns a:hover, .result-btns button:hover { opacity: .85; }
+
+  /* ── mobile ──────────────────────────────────────────────── */
+  @media (max-width: 480px) {
+    .card { padding: 20px 16px; }
+    #result-title { font-size: 1.3rem; }
+    .result-btns { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">✨ Поздравлятор</div>
+  <p>Видео-поздравление из ваших фото за минуту</p>
+</header>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- SCREEN: FORM                                               -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<div id="screen-form">
+  <div class="card">
+
+    <!-- Фото -->
+    <div class="section">
+      <div class="label">📸 Фотографии (до 30 штук)</div>
+      <div class="drop-zone" id="photo-zone">
+        <input type="file" id="photo-input" accept="image/jpeg,image/png,image/heic,image/heif"
+               multiple>
+        <div class="icon">🖼️</div>
+        <div class="hint">
+          <strong>Нажмите или перетащите</strong> фотографии сюда<br>
+          JPEG, PNG, HEIC — до 10 МБ каждый
+        </div>
+      </div>
+      <div id="photo-preview"></div>
+      <div id="photo-count"></div>
+    </div>
+
+    <!-- Аудио -->
+    <div class="section">
+      <div class="label">🎵 Музыка или голосовое</div>
+      <div class="drop-zone" id="audio-zone">
+        <input type="file" id="audio-input" accept="audio/mpeg,audio/wav,audio/mp4,audio/m4a,audio/ogg">
+        <div class="icon">🎶</div>
+        <div class="hint">
+          <strong>Нажмите или перетащите</strong> аудиофайл<br>
+          MP3, WAV, M4A — до 20 МБ
+        </div>
+      </div>
+      <div id="audio-name"></div>
+    </div>
+
+    <!-- Текст -->
+    <div class="section">
+      <div class="label">💬 Текст поздравления</div>
+      <textarea id="text-input" maxlength="500"
+        placeholder="С днём рождения, дорогая мама! Желаю счастья и здоровья!"></textarea>
+      <div id="char-count">0 / 500</div>
+    </div>
+
+    <!-- Стиль -->
+    <div class="section">
+      <div class="label">🎨 Стиль текста</div>
+      <div class="mode-row">
+        <button class="mode-btn active" data-mode="scrolling">
+          <span class="mode-icon">📜</span>
+          <span class="mode-title">Бегущая строка</span>
+          <span class="mode-desc">Текст плавно едет снизу</span>
+        </button>
+        <button class="mode-btn" data-mode="card">
+          <span class="mode-icon">💌</span>
+          <span class="mode-title">Открытка</span>
+          <span class="mode-desc">Текст в центре в конце</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Водяной знак -->
+    <div class="section">
+      <label class="toggle-row">
+        <div class="toggle on" id="wm-toggle"></div>
+        <div>
+          <div class="toggle-label">Водяной знак «Поздравлятор»</div>
+          <div class="toggle-sub">Бесплатная версия — убирается после оплаты</div>
+        </div>
+      </label>
+    </div>
+
+    <button id="submit-btn" disabled>Создать видео-поздравление ✨</button>
+    <div id="error-box"></div>
+
+  </div><!-- .card -->
+</div><!-- #screen-form -->
+
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- SCREEN: LOADING                                            -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<div id="screen-loading">
+  <div class="spinner-wrap">
+    <div class="spinner-ring"></div>
+    <div class="spinner-ring"></div>
+    <div class="spinner-ring"></div>
+    <div class="spinner-icon">✨</div>
+  </div>
+  <div id="loading-title">Создаём ваше видео...</div>
+  <div id="loading-status">Загружаем файлы</div>
+  <div class="progress-track">
+    <div class="progress-bar" id="progress-bar"></div>
+  </div>
+  <button id="back-btn">← Назад к форме</button>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- SCREEN: RESULT                                             -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<div id="screen-result">
+  <div id="result-title">🎉 Готово!</div>
+  <div id="result-subtitle">Ваше видео-поздравление создано</div>
+  <video id="result-video" controls playsinline></video>
+  <div class="result-btns">
+    <a id="download-btn" href="#" download="поздравление.mp4">⬇ Скачать видео</a>
+    <button onclick="showScreen('form')">+ Создать ещё</button>
+  </div>
+</div>
+
+
+<script>
+// ── state ──────────────────────────────────────────────────────
+let selectedPhotos  = [];   // File[]
+let selectedAudio   = null; // File
+let selectedMode    = 'scrolling';
+let watermark       = true;
+let pollingTimer    = null;
+
+// ── screens ────────────────────────────────────────────────────
+function showScreen(name) {
+  ['form', 'loading', 'result'].forEach(s => {
+    const el = document.getElementById('screen-' + s);
+    el.style.display = (s === name) ? (s === 'form' ? 'block' : 'flex') : 'none';
+  });
+  if (name === 'form') stopPolling();
+}
+
+// ── photo handling ─────────────────────────────────────────────
+document.getElementById('photo-input').addEventListener('change', e => {
+  addPhotos(Array.from(e.target.files));
+  e.target.value = '';
+});
+
+setupDrop('photo-zone', files => addPhotos(files.filter(f => f.type.startsWith('image/'))));
+
+function addPhotos(files) {
+  const remaining = 30 - selectedPhotos.length;
+  const toAdd = files.slice(0, remaining);
+  selectedPhotos = [...selectedPhotos, ...toAdd];
+  renderPhotoPreview();
+  updateSubmitBtn();
+}
+
+function renderPhotoPreview() {
+  const container = document.getElementById('photo-preview');
+  container.innerHTML = '';
+  selectedPhotos.forEach((file, i) => {
+    const wrap = document.createElement('div');
+    wrap.className = 'thumb-wrap';
+    const img  = document.createElement('img');
+    img.className = 'thumb';
+    img.src = URL.createObjectURL(file);
+    const del  = document.createElement('button');
+    del.className = 'del';
+    del.innerHTML = '×';
+    del.onclick = () => { selectedPhotos.splice(i, 1); renderPhotoPreview(); updateSubmitBtn(); };
+    wrap.appendChild(img);
+    wrap.appendChild(del);
+    container.appendChild(wrap);
+  });
+  const countEl = document.getElementById('photo-count');
+  countEl.textContent = selectedPhotos.length
+    ? `${selectedPhotos.length} фото выбрано`
+    : '';
+}
+
+// ── audio handling ─────────────────────────────────────────────
+document.getElementById('audio-input').addEventListener('change', e => {
+  if (e.target.files[0]) setAudio(e.target.files[0]);
+  e.target.value = '';
+});
+
+setupDrop('audio-zone', files => {
+  const audio = files.find(f => f.type.startsWith('audio/'));
+  if (audio) setAudio(audio);
+});
+
+function setAudio(file) {
+  selectedAudio = file;
+  const el = document.getElementById('audio-name');
+  el.style.display = 'block';
+  el.textContent = '🎵 ' + file.name;
+  updateSubmitBtn();
+}
+
+// ── drag-and-drop helper ───────────────────────────────────────
+function setupDrop(zoneId, handler) {
+  const zone = document.getElementById(zoneId);
+  zone.addEventListener('dragover',  e => { e.preventDefault(); zone.classList.add('over'); });
+  zone.addEventListener('dragleave', () => zone.classList.remove('over'));
+  zone.addEventListener('drop', e => {
+    e.preventDefault();
+    zone.classList.remove('over');
+    handler(Array.from(e.dataTransfer.files));
+  });
+}
+
+// ── text & char count ──────────────────────────────────────────
+document.getElementById('text-input').addEventListener('input', function() {
+  document.getElementById('char-count').textContent = this.value.length + ' / 500';
+  updateSubmitBtn();
+});
+
+// ── mode selector ──────────────────────────────────────────────
+document.querySelectorAll('.mode-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    selectedMode = btn.dataset.mode;
+  });
+});
+
+// ── watermark toggle ───────────────────────────────────────────
+document.getElementById('wm-toggle').addEventListener('click', function() {
+  watermark = !watermark;
+  this.classList.toggle('on', watermark);
+});
+
+// ── submit validation ──────────────────────────────────────────
+function updateSubmitBtn() {
+  const text = document.getElementById('text-input').value.trim();
+  const ok = selectedPhotos.length > 0 && selectedAudio && text.length > 0;
+  document.getElementById('submit-btn').disabled = !ok;
+}
+
+// ── submit ─────────────────────────────────────────────────────
+document.getElementById('submit-btn').addEventListener('click', submitJob);
+
+async function submitJob() {
+  const text = document.getElementById('text-input').value.trim();
+  setError('');
+  showScreen('loading');
+  setStatus('Загружаем файлы...', 15);
+
+  const fd = new FormData();
+  selectedPhotos.forEach(f => fd.append('photos', f));
+  fd.append('audio', selectedAudio);
+  fd.append('text', text);
+  fd.append('mode', selectedMode);
+  fd.append('watermark', watermark ? 'true' : 'false');
+
+  let jobId;
+  try {
+    const resp = await fetch('/jobs', { method: 'POST', body: fd });
+    const data = await resp.json();
+    if (!resp.ok) {
+      showScreen('form');
+      setError(data.detail || 'Ошибка при создании задачи');
+      return;
+    }
+    jobId = data.id;
+  } catch (err) {
+    showScreen('form');
+    setError('Не удалось связаться с сервером');
+    return;
+  }
+
+  setStatus('Рендерим видео...', 35);
+  startPolling(jobId);
+}
+
+// ── polling ────────────────────────────────────────────────────
+const POLL_INTERVAL = 4000;
+
+function startPolling(jobId) {
+  stopPolling();
+  let ticks = 0;
+  pollingTimer = setInterval(async () => {
+    ticks++;
+    const pct = Math.min(35 + ticks * 8, 92);
+    setStatus(getStatusMsg(ticks), pct);
+
+    try {
+      const resp = await fetch('/jobs/' + jobId);
+      const data = await resp.json();
+
+      if (data.status === 'done') {
+        stopPolling();
+        setStatus('Готово!', 100);
+        setTimeout(() => showResult(data.output_url), 400);
+      } else if (data.status === 'error') {
+        stopPolling();
+        showScreen('form');
+        setError('Ошибка рендеринга: ' + (data.error_message || 'неизвестная ошибка'));
+      }
+    } catch (_) { /* сеть временно недоступна — продолжаем */ }
+
+  }, POLL_INTERVAL);
+}
+
+function stopPolling() {
+  if (pollingTimer) { clearInterval(pollingTimer); pollingTimer = null; }
+}
+
+function getStatusMsg(tick) {
+  const msgs = [
+    'Обрабатываем фотографии...',
+    'Нарезаем слайды...',
+    'Добавляем музыку...',
+    'Накладываем текст...',
+    'Финальная сборка...',
+    'Почти готово...',
+  ];
+  return msgs[Math.min(tick - 1, msgs.length - 1)];
+}
+
+// ── result screen ──────────────────────────────────────────────
+function showResult(url) {
+  const video = document.getElementById('result-video');
+  const dl    = document.getElementById('download-btn');
+  video.src = url;
+  dl.href   = url;
+  showScreen('result');
+  video.play().catch(() => {});
+}
+
+// ── helpers ────────────────────────────────────────────────────
+function setStatus(msg, pct) {
+  document.getElementById('loading-status').textContent = msg;
+  document.getElementById('progress-bar').style.width   = pct + '%';
+}
+
+function setError(msg) {
+  const el = document.getElementById('error-box');
+  el.textContent = msg;
+  el.style.display = msg ? 'block' : 'none';
+}
+
+// ── back button ────────────────────────────────────────────────
+document.getElementById('back-btn').addEventListener('click', () => showScreen('form'));
+
+// ── init ───────────────────────────────────────────────────────
+showScreen('form');
+</script>
+
+</body>
+</html>
