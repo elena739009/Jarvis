@@ -1,5 +1,7 @@
 output/
+uploads/
 assets/render_font.ttf
+pozdravlyator.db
 __pycache__/
 *.pyc
 .env

@@ -1,4 +1,13 @@
+# рендеринг
 imageio-ffmpeg>=0.4.9
 Pillow>=10.0.0
 pillow-heif>=0.13.0
 numpy>=1.24.0
+
+# API
+fastapi>=0.110.0
+uvicorn[standard]>=0.29.0
+sqlalchemy>=2.0.0
+python-multipart>=0.0.9
+aiofiles>=23.0.0
+pydantic-settings>=2.0.0

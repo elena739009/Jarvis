@@ -18,6 +18,12 @@ import argparse
 import os
 import sys
 import tempfile
+
+# Принудительно UTF-8 для stdout/stderr — важно когда запускаемся как subprocess из API
+if hasattr(sys.stdout, "reconfigure"):
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+if hasattr(sys.stderr, "reconfigure"):
+    sys.stderr.reconfigure(encoding="utf-8", errors="replace")
 import subprocess
 from pathlib import Path
 
